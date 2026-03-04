@@ -42,6 +42,9 @@ export default function RootLayout({
               <a href="/design-3" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
                 Diseño 3
               </a>
+              <a href="/design-4" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
+                Diseño 4
+              </a>
             </div>
           </div>
         </nav>
