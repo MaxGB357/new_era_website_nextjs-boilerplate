@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -46,6 +47,14 @@ export default function RootLayout({
         <div className="pt-14">
           {children}
         </div>
+
+        {/* ElevenLabs Voice Agent Widget */}
+        {/* @ts-expect-error -- custom element from ElevenLabs widget embed */}
+        <elevenlabs-convai agent-id="agent_01k0pw199zfqevj0qd06ja91ec"></elevenlabs-convai>
+        <Script
+          src="https://unpkg.com/@elevenlabs/convai-widget-embed"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
