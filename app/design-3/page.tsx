@@ -1,20 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
-  Zap,
-  Globe,
-  Users,
-  Check,
-  Mail,
-  Phone,
-  MapPin,
-  ChevronRight,
   Calendar,
-  Save,
+  MousePointer2,
+  Activity,
+  Disc,
+  ScanLine,
 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,1474 +23,785 @@ const HEADING = "'Space Grotesk', sans-serif";
 const DRAMA = "'DM Serif Display', serif";
 const MONO = "'Space Mono', monospace";
 
-/* ─────────────────────── DIAGNOSTIC SHUFFLER ─────────────────────── */
-function DiagnosticShuffler() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const labels = [
-    "Automatización de Procesos",
-    "Análisis Predictivo",
-    "Integración AI",
-  ];
-  const colors = ["#E63B2E", "#111111", "#8B7355"];
+/* ─────────────────────── COMPONENTS ─────────────────────── */
+
+const Hero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+      tl.from(".hero-text", {
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power3.out",
+        delay: 0.2,
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative h-[100dvh] w-full overflow-hidden flex items-end pb-24 md:pb-32 px-6 md:px-12"
+    >
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?auto=format&fit=crop&w=1920&q=80")',
+        }}
+      ></div>
+      {/* Gradient Overlay */}
+      <div
+        className="absolute inset-0 z-10"
+        style={{
+          background: `linear-gradient(to top, ${BLACK} 0%, ${BLACK}dd 25%, ${BLACK}88 50%, ${PAPER}44 75%, ${PAPER}22 100%)`,
+        }}
+      ></div>
+
+      {/* Content */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col items-start">
+        <h1 className="flex flex-col" style={{ color: PAPER }}>
+          <span
+            className="hero-text font-bold text-3xl md:text-5xl lg:text-6xl tracking-tight mb-2"
+            style={{ fontFamily: HEADING }}
+          >
+            La Inteligencia Artificial es la
+          </span>
+          <span
+            className="hero-text italic text-7xl md:text-8xl lg:text-[140px] leading-[0.85] pr-4"
+            style={{ fontFamily: DRAMA, color: RED }}
+          >
+            Evoluci&oacute;n.
+          </span>
+        </h1>
+        <p
+          className="hero-text mt-8 max-w-xl text-lg md:text-xl leading-relaxed"
+          style={{ color: `${PAPER}cc` }}
+        >
+          Dise&ntilde;amos e implementamos soluciones de Inteligencia Artificial a
+          medida en tu empresa.
+        </p>
+        <div className="hero-text mt-10 flex flex-col sm:flex-row gap-4">
+          <button
+            className="btn-magnetic px-8 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-3"
+            style={{ backgroundColor: RED, color: "#fff" }}
+          >
+            <Calendar className="w-5 h-5" />
+            Agendar una reuni&oacute;n
+          </button>
+          <button
+            className="btn-magnetic backdrop-blur-md border px-8 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-3 transition-colors"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderColor: "rgba(255,255,255,0.2)",
+              color: PAPER,
+            }}
+          >
+            Hablar con Agente AI
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const DiagnosticShuffler = () => {
+  const [items, setItems] = useState([
+    "Operaciones Optimizadas",
+    "Resultados Directos",
+    "Cero Teor\u00eda",
+  ]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % 3);
+      setItems((prev) => {
+        const newItems = [...prev];
+        const last = newItems.pop()!;
+        newItems.unshift(last);
+        return newItems;
+      });
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative h-48 w-full flex items-center justify-center">
-      {labels.map((label, i) => {
-        const offset = (i - activeIndex + 3) % 3;
-        const isTop = offset === 0;
-        const isMid = offset === 1;
+    <div className="h-48 relative flex items-center justify-center overflow-hidden w-full">
+      {items.map((item, i) => {
+        const isTop = i === 0;
+        const isMiddle = i === 1;
+
         return (
           <div
-            key={label}
-            className="absolute rounded-xl border border-black/10 px-6 py-5 shadow-lg"
+            key={item}
+            className="absolute w-[85%] p-4 flex items-center justify-between border border-black/10"
             style={{
+              background: isTop ? "#fff" : isMiddle ? OFFWHITE : PAPER,
               fontFamily: MONO,
-              fontSize: "0.8rem",
-              background: isTop ? "#fff" : isMid ? OFFWHITE : PAPER,
-              color: colors[i],
+              fontSize: "0.75rem",
               fontWeight: isTop ? 700 : 400,
-              zIndex: isTop ? 30 : isMid ? 20 : 10,
-              transform: isTop
-                ? "translateY(0px) rotate(-1deg) scale(1)"
-                : isMid
-                  ? "translateY(14px) rotate(2deg) scale(0.96)"
-                  : "translateY(28px) rotate(-3deg) scale(0.92)",
-              opacity: isTop ? 1 : isMid ? 0.7 : 0.4,
-              transition:
-                "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
-              width: "80%",
-              maxWidth: "260px",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: BLACK,
+              transform: `translateY(${isTop ? "0px" : isMiddle ? "16px" : "32px"}) scale(${isTop ? 1 : isMiddle ? 0.95 : 0.9}) rotate(${isTop ? "-1deg" : isMiddle ? "2deg" : "-3deg"})`,
+              opacity: isTop ? 1 : isMiddle ? 0.7 : 0.4,
+              zIndex: 3 - i,
+              transition: "all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)",
             }}
           >
-            <div
-              className="text-[10px] uppercase tracking-widest mb-2"
-              style={{ color: "#999", fontFamily: MONO }}
-            >
-              Diagnóstico #{String(i + 1).padStart(2, "0")}
-            </div>
-            {label}
+            <span>{item}</span>
+            <Activity className="w-4 h-4" style={{ color: RED }} />
           </div>
         );
       })}
     </div>
   );
-}
+};
 
-/* ─────────────────────── TELEMETRY TYPEWRITER ─────────────────────── */
-function TelemetryTypewriter() {
-  const messages = [
-    "Conectando con Google Workspace...",
-    "Sincronizando Microsoft 365...",
-    "Integrando sistema legacy...",
-    "Optimizando flujos de trabajo...",
-  ];
-  const [msgIndex, setMsgIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [lines, setLines] = useState<string[]>([]);
-  const [currentText, setCurrentText] = useState("");
-  const [dotPulse, setDotPulse] = useState(true);
+const TelemetryTypewriter = () => {
+  const [text, setText] = useState("");
+  const fullText =
+    "Integrando Google Suite...\nConectando Microsoft Office...\nAjustando a tu empresa...\n> Sistema Agn\u00f3stico Activo.";
 
   useEffect(() => {
-    const pulseInterval = setInterval(
-      () => setDotPulse((p) => !p),
-      800
-    );
-    return () => clearInterval(pulseInterval);
+    let i = 0;
+    const timer = setInterval(() => {
+      setText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) {
+        setTimeout(() => {
+          i = 0;
+        }, 4000);
+      }
+    }, 50);
+    return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    const msg = messages[msgIndex];
-    if (charIndex < msg.length) {
-      const timeout = setTimeout(() => {
-        setCurrentText(msg.slice(0, charIndex + 1));
-        setCharIndex((c) => c + 1);
-      }, 40 + Math.random() * 30);
-      return () => clearTimeout(timeout);
-    } else {
-      const timeout = setTimeout(() => {
-        setLines((prev) => [...prev.slice(-2), msg]);
-        setCurrentText("");
-        setCharIndex(0);
-        setMsgIndex((m) => (m + 1) % messages.length);
-      }, 1200);
-      return () => clearTimeout(timeout);
-    }
-  }, [charIndex, msgIndex]);
 
   return (
     <div
-      className="h-48 flex flex-col justify-between"
-      style={{ fontFamily: MONO }}
+      className="h-48 w-full p-5 flex flex-col relative overflow-hidden"
+      style={{ backgroundColor: BLACK }}
     >
-      <div className="flex items-center gap-2 mb-3">
-        <span
-          className="inline-block w-2 h-2 rounded-full"
-          style={{
-            backgroundColor: RED,
-            opacity: dotPulse ? 1 : 0.3,
-            transition: "opacity 0.3s",
-          }}
-        />
+      <div className="flex items-center gap-2 mb-4">
+        <div
+          className="w-2 h-2 rounded-full animate-pulse"
+          style={{ backgroundColor: RED }}
+        ></div>
         <span
           className="text-[10px] uppercase tracking-widest"
-          style={{ color: RED }}
+          style={{ fontFamily: MONO, color: `${PAPER}80` }}
         >
           Live Feed
         </span>
       </div>
-      <div className="flex-1 overflow-hidden text-xs leading-6">
-        {lines.map((line, i) => (
-          <div key={i} className="opacity-40" style={{ color: BLACK }}>
-            <span style={{ color: "#999" }}>
-              [{String(i + 1).padStart(2, "0")}]{" "}
-            </span>
-            {line}
-          </div>
-        ))}
-        <div style={{ color: BLACK }}>
-          <span style={{ color: RED }}>{">"} </span>
-          {currentText}
-          <span
-            className="inline-block w-[6px] h-[14px] ml-[2px] align-middle"
-            style={{
-              backgroundColor: RED,
-              animation: "blink 1s step-end infinite",
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────── CURSOR PROTOCOL SCHEDULER ─────────────────────── */
-function CursorScheduler() {
-  const days = ["LUN", "MAR", "MIÉ", "JUE", "VIE"];
-  const hours = ["9:00", "11:00", "14:00", "16:00"];
-  const [cursorPos, setCursorPos] = useState({ day: 0, hour: 0 });
-  const [selected, setSelected] = useState<
-    { day: number; hour: number }[]
-  >([]);
-  const [phase, setPhase] = useState<"selecting" | "saving">(
-    "selecting"
-  );
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    const sequence = [
-      { day: 1, hour: 1 },
-      { day: 3, hour: 2 },
-      { day: 0, hour: 3 },
-      { day: 4, hour: 0 },
-      { day: 2, hour: 1 },
-    ];
-    let step = 0;
-    setSaved(false);
-    setSelected([]);
-    setPhase("selecting");
-
-    const interval = setInterval(() => {
-      if (step < sequence.length) {
-        const s = sequence[step];
-        setCursorPos(s);
-        setSelected((prev) => [...prev, s]);
-        step++;
-      } else if (phase === "selecting") {
-        setPhase("saving");
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (phase === "saving") {
-      const timeout = setTimeout(() => {
-        setSaved(true);
-        setTimeout(() => {
-          setSaved(false);
-          setSelected([]);
-          setPhase("selecting");
-          setCursorPos({ day: 0, hour: 0 });
-
-          const sequence = [
-            { day: 1, hour: 1 },
-            { day: 3, hour: 2 },
-            { day: 0, hour: 3 },
-            { day: 4, hour: 0 },
-            { day: 2, hour: 1 },
-          ];
-          let step = 0;
-          const interval = setInterval(() => {
-            if (step < sequence.length) {
-              const s = sequence[step];
-              setCursorPos(s);
-              setSelected((prev) => [...prev, s]);
-              step++;
-            } else {
-              setPhase("saving");
-              clearInterval(interval);
-            }
-          }, 1000);
-        }, 2000);
-      }, 800);
-      return () => clearTimeout(timeout);
-    }
-  }, [phase]);
-
-  const isSelected = (d: number, h: number) =>
-    selected.some((s) => s.day === d && s.hour === h);
-  const isCursor = (d: number, h: number) =>
-    cursorPos.day === d && cursorPos.hour === h;
-
-  return (
-    <div className="h-48 flex flex-col" style={{ fontFamily: MONO }}>
-      <div className="flex items-center gap-2 mb-3">
-        <Calendar size={12} style={{ color: RED }} />
+      <pre
+        className="text-xs whitespace-pre-wrap leading-relaxed"
+        style={{ fontFamily: MONO, color: `${PAPER}cc` }}
+      >
+        {text}
         <span
-          className="text-[10px] uppercase tracking-widest"
-          style={{ color: "#999" }}
-        >
-          Protocolo de Agenda
-        </span>
-      </div>
-      <div className="flex-1">
-        <div className="grid grid-cols-6 gap-[2px] text-[9px]">
-          <div />
-          {days.map((d) => (
-            <div
-              key={d}
-              className="text-center py-1 font-bold"
-              style={{ color: "#999" }}
-            >
-              {d}
-            </div>
-          ))}
-          {hours.map((h, hi) => (
-            <>
-              <div
-                key={`h-${hi}`}
-                className="text-right pr-1 py-1"
-                style={{ color: "#999", fontSize: "8px" }}
-              >
-                {h}
-              </div>
-              {days.map((_, di) => (
-                <div
-                  key={`${di}-${hi}`}
-                  className="aspect-square rounded-sm flex items-center justify-center transition-all duration-300"
-                  style={{
-                    backgroundColor: isSelected(di, hi)
-                      ? RED
-                      : isCursor(di, hi)
-                        ? `${RED}30`
-                        : "#f0ede7",
-                    border: isCursor(di, hi)
-                      ? `1.5px solid ${RED}`
-                      : "1px solid transparent",
-                    transform: isCursor(di, hi)
-                      ? "scale(1.15)"
-                      : "scale(1)",
-                  }}
-                >
-                  {isSelected(di, hi) && (
-                    <Check size={8} color="#fff" strokeWidth={3} />
-                  )}
-                </div>
-              ))}
-            </>
-          ))}
-        </div>
-      </div>
-      <div className="mt-2 flex justify-end">
-        <button
-          className="flex items-center gap-1 px-3 py-1 rounded-md text-[10px] font-bold transition-all duration-300"
-          style={{
-            backgroundColor:
-              phase === "saving"
-                ? saved
-                  ? "#22c55e"
-                  : RED
-                : "#e0ddd6",
-            color: phase === "saving" ? "#fff" : "#999",
-            transform:
-              phase === "saving" && !saved ? "scale(1.05)" : "scale(1)",
-          }}
-        >
-          <Save size={10} />
-          {saved ? "¡Guardado!" : "Guardar"}
-        </button>
-      </div>
+          className="inline-block w-2 h-3 ml-1 animate-pulse"
+          style={{ backgroundColor: RED }}
+        ></span>
+      </pre>
     </div>
   );
-}
+};
 
-/* ─────────────────────── SVG ANIMATIONS ─────────────────────── */
-function RotatingGeometric() {
-  return (
-    <svg viewBox="0 0 120 120" className="w-20 h-20">
-      <g transform="translate(60,60)">
-        {[40, 30, 20].map((r, i) => (
-          <circle
-            key={i}
-            cx="0"
-            cy="0"
-            r={r}
-            fill="none"
-            stroke={i === 0 ? RED : i === 1 ? BLACK : "#999"}
-            strokeWidth={1.5}
-            strokeDasharray={i === 1 ? "4 4" : "none"}
-            style={{
-              transformOrigin: "center",
-              animation: `spin${i % 2 === 0 ? "" : "Reverse"} ${3 + i * 2}s linear infinite`,
-            }}
-          />
-        ))}
-        <circle cx="0" cy="0" r="4" fill={RED} />
-      </g>
-    </svg>
-  );
-}
-
-function ScanningGrid() {
-  return (
-    <svg viewBox="0 0 120 120" className="w-20 h-20">
-      {/* grid */}
-      {Array.from({ length: 6 }).map((_, i) => (
-        <g key={i}>
-          <line
-            x1={20 + i * 16}
-            y1="20"
-            x2={20 + i * 16}
-            y2="100"
-            stroke="#ddd"
-            strokeWidth="0.5"
-          />
-          <line
-            x1="20"
-            y1={20 + i * 16}
-            x2="100"
-            y2={20 + i * 16}
-            stroke="#ddd"
-            strokeWidth="0.5"
-          />
-        </g>
-      ))}
-      {/* dots at intersections */}
-      {[
-        [36, 36],
-        [68, 52],
-        [52, 84],
-        [84, 36],
-        [36, 68],
-      ].map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="3" fill={RED} opacity={0.7} />
-      ))}
-      {/* scan line */}
-      <line
-        x1="20"
-        y1="20"
-        x2="20"
-        y2="100"
-        stroke={RED}
-        strokeWidth="2"
-        opacity="0.6"
-        style={{ animation: "scanLine 2.5s ease-in-out infinite" }}
-      />
-    </svg>
-  );
-}
-
-function PulsingWaveform() {
-  return (
-    <svg viewBox="0 0 120 40" className="w-24 h-10">
-      {Array.from({ length: 20 }).map((_, i) => (
-        <rect
-          key={i}
-          x={6 + i * 5.5}
-          y={20 - Math.sin(i * 0.7) * 12}
-          width="3"
-          rx="1.5"
-          height={Math.abs(Math.sin(i * 0.7)) * 24 + 2}
-          fill={i % 3 === 0 ? RED : BLACK}
-          opacity={0.6 + Math.sin(i * 0.7) * 0.4}
-          style={{
-            animation: `waveBar 1.5s ease-in-out ${i * 0.08}s infinite alternate`,
-          }}
-        />
-      ))}
-    </svg>
-  );
-}
-
-/* ─────────────────────── MAIN PAGE ─────────────────────── */
-export default function Design3() {
-  const heroRef = useRef<HTMLElement>(null);
-  const featuresRef = useRef<HTMLElement>(null);
-  const philosophyRef = useRef<HTMLElement>(null);
-  const protocolRef = useRef<HTMLElement>(null);
-  const pricingRef = useRef<HTMLElement>(null);
-  const card1Ref = useRef<HTMLDivElement>(null);
-  const card2Ref = useRef<HTMLDivElement>(null);
-  const card3Ref = useRef<HTMLDivElement>(null);
+const CursorProtocolScheduler = () => {
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dayRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLDivElement>(null);
+  const [activeDay, setActiveDay] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      /* ── HERO ── */
-      const heroEls = heroRef.current?.querySelectorAll(".hero-anim");
-      if (heroEls) {
-        gsap.fromTo(
-          heroEls,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            stagger: 0.15,
-            ease: "power3.out",
-            delay: 0.3,
-          }
-        );
-      }
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
 
-      /* ── FEATURES ── */
-      const featureCards =
-        featuresRef.current?.querySelectorAll(".feature-card");
-      if (featureCards) {
-        gsap.fromTo(
-          featureCards,
-          { y: 80, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: featuresRef.current,
-              start: "top 75%",
-            },
-          }
-        );
-      }
+      tl.set(cursorRef.current, { x: 0, y: 0, opacity: 0 });
+      tl.set(dayRef.current, { scale: 1, backgroundColor: "transparent" });
+      tl.set(btnRef.current, { scale: 1 });
 
-      /* ── PHILOSOPHY — word-by-word reveal ── */
-      const philWords =
-        philosophyRef.current?.querySelectorAll(".phil-word");
-      if (philWords) {
-        gsap.fromTo(
-          philWords,
-          { opacity: 0.08, y: 8 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.06,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: philosophyRef.current,
-              start: "top 70%",
-              end: "bottom 40%",
-              scrub: 0.8,
-            },
-          }
-        );
-      }
-
-      /* ── PROTOCOL — Sticky Stacking Cards ── */
-      const protocolCards = [
-        card1Ref.current,
-        card2Ref.current,
-        card3Ref.current,
-      ];
-      protocolCards.forEach((card, i) => {
-        if (!card) return;
-
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 15%",
-          end: "bottom 15%",
-          pin: true,
-          pinSpacing: i === protocolCards.length - 1,
-          endTrigger:
-            i < protocolCards.length - 1
-              ? protocolCards[protocolCards.length - 1]!
-              : undefined,
-        });
-
-        if (i < protocolCards.length - 1) {
-          gsap.to(card, {
-            scale: 0.9,
-            filter: "blur(20px)",
-            opacity: 0.5,
-            ease: "power2.inOut",
-            scrollTrigger: {
-              trigger: protocolCards[i + 1]!,
-              start: "top 80%",
-              end: "top 20%",
-              scrub: true,
-            },
-          });
-        }
-      });
-
-      /* ── PRICING ── */
-      const pricingCards =
-        pricingRef.current?.querySelectorAll(".pricing-card");
-      if (pricingCards) {
-        gsap.fromTo(
-          pricingCards,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: pricingRef.current,
-              start: "top 70%",
-            },
-          }
-        );
-      }
+      tl.to(cursorRef.current, { opacity: 1, duration: 0.3 })
+        .to(cursorRef.current, {
+          x: 60,
+          y: 40,
+          duration: 0.8,
+          ease: "power2.inOut",
+        })
+        .to(cursorRef.current, { scale: 0.9, duration: 0.1 })
+        .to(dayRef.current, { scale: 0.95, duration: 0.1 }, "<")
+        .add(() => setActiveDay(true))
+        .to(dayRef.current, {
+          backgroundColor: RED,
+          color: "#fff",
+          duration: 0.1,
+        })
+        .to(cursorRef.current, { scale: 1, duration: 0.1 })
+        .to(dayRef.current, { scale: 1, duration: 0.1 }, "<")
+        .to(cursorRef.current, {
+          x: 140,
+          y: 100,
+          duration: 0.8,
+          ease: "power2.inOut",
+          delay: 0.2,
+        })
+        .to(cursorRef.current, { scale: 0.9, duration: 0.1 })
+        .to(btnRef.current, { scale: 0.95, duration: 0.1 }, "<")
+        .to(cursorRef.current, { scale: 1, duration: 0.1 })
+        .to(btnRef.current, { scale: 1, duration: 0.1 }, "<")
+        .to(cursorRef.current, { opacity: 0, duration: 0.3, delay: 0.5 })
+        .add(() => setActiveDay(false));
     });
-
     return () => ctx.revert();
   }, []);
 
-  /* ── Philosophy word splitting ── */
-  const philLine1 =
-    "La mayoría de las consultoras: venden soluciones predeterminadas.";
-  const philLine2Words = [
-    { text: "Nosotros:", highlight: false },
-    { text: " entendemos", highlight: false },
-    { text: " tu", highlight: false },
-    { text: " realidad.", highlight: true },
-  ];
+  const days = ["S", "M", "T", "W", "T", "F", "S"];
 
   return (
     <div
-      className="noise-overlay"
-      style={{
-        background: OFFWHITE,
-        color: BLACK,
-        fontFamily: HEADING,
-        letterSpacing: "-0.02em",
-      }}
+      className="h-48 w-full p-5 relative border border-black/5 flex flex-col justify-between"
+      style={{ backgroundColor: "#fff" }}
     >
-      {/* ── Keyframe Animations ── */}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((d, i) => (
+          <div
+            key={i}
+            ref={i === 3 ? dayRef : null}
+            className="aspect-square flex items-center justify-center text-xs font-medium transition-colors"
+            style={{
+              fontFamily: MONO,
+              backgroundColor:
+                i === 3 && activeDay ? RED : OFFWHITE,
+              color: i === 3 && activeDay ? "#fff" : `${BLACK}50`,
+            }}
+          >
+            {d}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-end">
+        <div
+          ref={btnRef}
+          className="text-[10px] uppercase tracking-wider px-4 py-2"
+          style={{
+            fontFamily: MONO,
+            fontWeight: 700,
+            backgroundColor: BLACK,
+            color: "#fff",
+          }}
+        >
+          Agendar MVP
+        </div>
+      </div>
+
+      {/* Cursor */}
+      <div
+        ref={cursorRef}
+        className="absolute top-0 left-0 z-10 pointer-events-none"
+        style={{ transform: "translate(0,0)" }}
+      >
+        <MousePointer2 className="w-5 h-5 text-black fill-white drop-shadow-md" />
+      </div>
+    </div>
+  );
+};
+
+const Features = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".feature-card", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 75%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      id="features"
+      ref={containerRef}
+      className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto"
+    >
+      <div className="mb-16">
+        <h2
+          className="font-bold text-3xl md:text-5xl tracking-tight"
+          style={{ fontFamily: HEADING, color: BLACK }}
+        >
+          Aplicaci&oacute;n directa.
+          <br />
+          <span style={{ fontFamily: DRAMA, fontStyle: "italic", color: RED, fontWeight: 400 }}>
+            Resultados reales.
+          </span>
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Card 1 */}
+        <div
+          className="feature-card p-8 border border-black/10 flex flex-col"
+          style={{ backgroundColor: OFFWHITE }}
+        >
+          <DiagnosticShuffler />
+          <div className="mt-8">
+            <h3
+              className="font-bold text-xl mb-3"
+              style={{ fontFamily: HEADING }}
+            >
+              Experiencia Real
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${BLACK}b3` }}>
+              Fundadores con experiencia aplicando AI en operaciones internas. No
+              ofrecemos teor&iacute;a, sino aplicaci&oacute;n directa con resultados.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 2 */}
+        <div
+          className="feature-card p-8 border border-black/10 flex flex-col"
+          style={{ backgroundColor: OFFWHITE }}
+        >
+          <TelemetryTypewriter />
+          <div className="mt-8">
+            <h3
+              className="font-bold text-xl mb-3"
+              style={{ fontFamily: HEADING }}
+            >
+              Agn&oacute;sticos al Sistema
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${BLACK}b3` }}>
+              Nos ajustamos a las circunstancias de tu empresa, ya sea Google
+              Suite, Microsoft Office u otros ecosistemas.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 3 */}
+        <div
+          className="feature-card p-8 border border-black/10 flex flex-col"
+          style={{ backgroundColor: OFFWHITE }}
+        >
+          <CursorProtocolScheduler />
+          <div className="mt-8">
+            <h3
+              className="font-bold text-xl mb-3"
+              style={{ fontFamily: HEADING }}
+            >
+              Consultor&iacute;a Emp&aacute;tica
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${BLACK}b3` }}>
+              Avanzamos mediante prototipos y MVPs para identificar y solucionar
+              todas las preocupaciones del cliente. Sin cajas negras.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Philosophy = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to(".parallax-bg", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+        y: 100,
+        ease: "none",
+      });
+
+      gsap.from(".phil-text", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 60%",
+        },
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      id="philosophy"
+      ref={containerRef}
+      className="relative py-32 md:py-48 px-6 md:px-12 overflow-hidden mx-4 md:mx-8 my-12"
+      style={{ backgroundColor: BLACK }}
+    >
+      {/* Background Texture */}
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-20">
+        <div
+          className="parallax-bg absolute top-[-20%] left-0 w-full h-[140%] bg-cover bg-center"
+          style={{
+            backgroundImage:
+              'url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop")',
+          }}
+        ></div>
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center">
+        <p
+          className="phil-text text-lg md:text-2xl mb-8 max-w-2xl"
+          style={{ color: `${PAPER}99` }}
+        >
+          La mayor&iacute;a de las consultoras se enfocan en: teor&iacute;a abstracta y
+          soluciones predeterminadas &ldquo;out of the box&rdquo;.
+        </p>
+        <h2
+          className="phil-text font-bold text-4xl md:text-6xl lg:text-7xl leading-tight"
+          style={{ fontFamily: HEADING, color: PAPER }}
+        >
+          Nosotros nos enfocamos en: <br />
+          <span
+            style={{
+              fontFamily: DRAMA,
+              fontStyle: "italic",
+              color: RED,
+              fontWeight: 400,
+              fontSize: "clamp(3rem, 8vw, 8rem)",
+            }}
+          >
+            empat&iacute;a y resultados.
+          </span>
+        </h2>
+      </div>
+    </section>
+  );
+};
+
+const Protocol = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray(
+        ".protocol-card"
+      ) as HTMLElement[];
+
+      cards.forEach((card, i) => {
+        if (i === cards.length - 1) return;
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 10%",
+          endTrigger: containerRef.current,
+          end: "bottom bottom",
+          pin: true,
+          pinSpacing: false,
+          animation: gsap.to(card, {
+            scale: 0.9 - i * 0.05,
+            opacity: 0.5,
+            filter: "blur(10px)",
+            ease: "none",
+          }),
+          scrub: true,
+        });
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  const steps = [
+    {
+      num: "01",
+      title: "Diagn\u00f3stico Profundo",
+      desc: "Identificamos las preocupaciones reales de tu empresa antes de escribir una sola l\u00ednea de c\u00f3digo.",
+      icon: (
+        <Disc
+          className="w-16 h-16"
+          style={{
+            color: RED,
+            animation: "spin 10s linear infinite",
+          }}
+        />
+      ),
+    },
+    {
+      num: "02",
+      title: "Prototipado \u00c1gil",
+      desc: "Avanzamos en base a m\u00faltiples maquetas y MVPs. Ajustamos la soluci\u00f3n a tu ecosistema actual.",
+      icon: (
+        <ScanLine className="w-16 h-16 animate-pulse" style={{ color: RED }} />
+      ),
+    },
+    {
+      num: "03",
+      title: "Implementaci\u00f3n a Medida",
+      desc: "Despliegue de soluciones de IA que generan impacto directo en tus operaciones diarias.",
+      icon: <Activity className="w-16 h-16" style={{ color: RED }} />,
+    },
+  ];
+
+  return (
+    <section
+      id="protocol"
+      ref={containerRef}
+      className="py-24 px-4 md:px-8 max-w-6xl mx-auto relative"
+    >
+      <div className="mb-24 text-center">
+        <h2
+          className="font-bold text-4xl md:text-6xl"
+          style={{ fontFamily: HEADING, color: BLACK }}
+        >
+          Nuestro{" "}
+          <span style={{ fontFamily: DRAMA, fontStyle: "italic", fontWeight: 400, color: `${BLACK}cc` }}>
+            Protocolo
+          </span>
+        </h2>
+      </div>
+
+      <div className="relative">
+        {steps.map((step, i) => (
+          <div
+            key={i}
+            className="protocol-card h-[70vh] w-full border border-black/10 p-8 md:p-16 flex flex-col md:flex-row items-center justify-between mb-8 origin-top shadow-xl"
+            style={{ backgroundColor: "#fff", zIndex: i }}
+          >
+            <div className="flex-1">
+              <span
+                className="text-xl md:text-2xl mb-6 block"
+                style={{ fontFamily: MONO, color: RED }}
+              >
+                [{step.num}]
+              </span>
+              <h3
+                className="font-bold text-3xl md:text-5xl mb-6"
+                style={{ fontFamily: HEADING, color: BLACK }}
+              >
+                {step.title}
+              </h3>
+              <p
+                className="text-lg md:text-xl max-w-md leading-relaxed"
+                style={{ color: `${BLACK}b3` }}
+              >
+                {step.desc}
+              </p>
+            </div>
+            <div className="flex-1 flex justify-center items-center mt-12 md:mt-0">
+              <div
+                className="w-48 h-48 flex items-center justify-center shadow-inner relative overflow-hidden"
+                style={{ backgroundColor: OFFWHITE }}
+              >
+                {step.icon}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const BrutalistFooter = () => {
+  return (
+    <footer
+      className="pt-24 pb-12 px-6 md:px-12 mt-24"
+      style={{ backgroundColor: BLACK, color: PAPER }}
+    >
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
+        <div className="lg:col-span-2">
+          <h2
+            className="font-bold text-3xl mb-4"
+            style={{ fontFamily: HEADING }}
+          >
+            New Era
+          </h2>
+          <p style={{ color: `${PAPER}99`, maxWidth: "24rem" }}>
+            Dise&ntilde;amos e implementamos soluciones de Inteligencia Artificial a
+            medida en tu empresa.
+          </p>
+        </div>
+
+        <div>
+          <h4
+            className="text-xs uppercase tracking-widest mb-6"
+            style={{ fontFamily: MONO, color: RED }}
+          >
+            Navegaci&oacute;n
+          </h4>
+          <ul className="space-y-4 font-medium text-sm">
+            <li>
+              <a
+                href="#features"
+                className="transition-colors"
+                style={{ color: `${PAPER}cc` }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = RED)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = `${PAPER}cc`)}
+              >
+                Soluciones
+              </a>
+            </li>
+            <li>
+              <a
+                href="#philosophy"
+                className="transition-colors"
+                style={{ color: `${PAPER}cc` }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = RED)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = `${PAPER}cc`)}
+              >
+                Filosof&iacute;a
+              </a>
+            </li>
+            <li>
+              <a
+                href="#protocol"
+                className="transition-colors"
+                style={{ color: `${PAPER}cc` }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = RED)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = `${PAPER}cc`)}
+              >
+                Protocolo
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4
+            className="text-xs uppercase tracking-widest mb-6"
+            style={{ fontFamily: MONO, color: RED }}
+          >
+            Contacto
+          </h4>
+          <ul className="space-y-4 font-medium text-sm">
+            <li>
+              <a
+                href="#"
+                className="transition-colors"
+                style={{ color: `${PAPER}cc` }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = RED)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = `${PAPER}cc`)}
+              >
+                Agendar Reuni&oacute;n
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="transition-colors"
+                style={{ color: `${PAPER}cc` }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = RED)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = `${PAPER}cc`)}
+              >
+                Hablar con Agente AI
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row items-center justify-between gap-6"
+        style={{ borderTop: `1px solid ${PAPER}1a` }}
+      >
+        <div
+          className="flex items-center gap-3 px-4 py-2 border"
+          style={{
+            backgroundColor: `${PAPER}0d`,
+            borderColor: `${PAPER}1a`,
+          }}
+        >
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <span
+            className="text-xs uppercase tracking-wider"
+            style={{ fontFamily: MONO, color: `${PAPER}b3` }}
+          >
+            System Operational
+          </span>
+        </div>
+        <div
+          className="text-xs"
+          style={{ fontFamily: MONO, color: `${PAPER}66` }}
+        >
+          &copy; {new Date().getFullYear()} New Era Consultora AI. All rights
+          reserved.
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+/* ─────────────────────── PAGE ─────────────────────── */
+
+export default function BrutalistSignalPage() {
+  return (
+    <>
       <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+        .brutalist-page {
+          --font-heading: 'Space Grotesk', sans-serif;
+          --font-drama: 'DM Serif Display', serif;
+          --font-mono: 'Space Mono', monospace;
+          background-color: ${OFFWHITE};
+          color: ${BLACK};
+          font-family: 'Space Grotesk', sans-serif;
+          letter-spacing: -0.02em;
         }
+
+        .brutalist-page .noise-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          pointer-events: none;
+          z-index: 9999;
+          opacity: 0.04;
+          background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        .brutalist-page .btn-magnetic {
+          transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .brutalist-page .btn-magnetic:hover {
+          transform: scale(1.03);
+        }
+
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-        @keyframes spinReverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
-        }
-        @keyframes scanLine {
-          0% { transform: translateX(0px); }
-          50% { transform: translateX(80px); }
-          100% { transform: translateX(0px); }
-        }
-        @keyframes waveBar {
-          0% { transform: scaleY(1); }
-          100% { transform: scaleY(1.5); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
+
+        /* Scrollbar */
+        .brutalist-page ::-webkit-scrollbar { width: 8px; }
+        .brutalist-page ::-webkit-scrollbar-track { background: ${OFFWHITE}; }
+        .brutalist-page ::-webkit-scrollbar-thumb { background: ${BLACK}; border-radius: 0; }
       `}</style>
 
-      {/* ═════════════════════ 1. HERO ═════════════════════ */}
-      <section
-        ref={heroRef}
-        className="relative w-full overflow-hidden"
-        style={{ height: "100dvh" }}
-      >
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?auto=format&fit=crop&w=1920&q=80)`,
-          }}
-        />
-        {/* Heavy gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to top, ${BLACK} 0%, ${BLACK}dd 25%, ${BLACK}88 50%, ${PAPER}44 75%, ${PAPER}22 100%)`,
-          }}
-        />
-        {/* Content — bottom-left */}
-        <div className="relative z-10 h-full flex flex-col justify-end px-6 sm:px-10 md:px-16 pb-16 md:pb-24 max-w-5xl">
-          <div
-            className="hero-anim text-xs uppercase tracking-[0.3em] mb-6"
-            style={{ fontFamily: MONO, color: RED }}
-          >
-            New Era — Consultoría AI
-          </div>
-          <h1 className="hero-anim">
-            <span
-              className="block text-xl sm:text-2xl font-bold"
-              style={{
-                fontFamily: HEADING,
-                color: PAPER,
-              }}
-            >
-              Transform the
-            </span>
-            <span
-              className="block leading-none"
-              style={{
-                fontFamily: DRAMA,
-                fontStyle: "italic",
-                color: PAPER,
-                fontSize: "clamp(3rem, 8vw, 5rem)",
-              }}
-            >
-              System.
-            </span>
-          </h1>
-          <p
-            className="hero-anim mt-6 max-w-lg text-sm sm:text-base leading-relaxed"
-            style={{ color: `${PAPER}cc` }}
-          >
-            Consultoría sin adornos. AI aplicada con precisión quirúrgica.
-          </p>
-          <div className="hero-anim mt-8 flex flex-wrap gap-4 items-center">
-            <a
-              href="#pricing"
-              className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all"
-              style={{
-                backgroundColor: RED,
-                color: "#fff",
-              }}
-            >
-              Agenda una Reunión
-              <ArrowRight size={16} />
-            </a>
-            <span
-              className="text-xs uppercase tracking-widest"
-              style={{ color: `${PAPER}88`, fontFamily: MONO }}
-            >
-              Scroll para explorar ↓
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ═════════════════════ 2. FEATURES ═════════════════════ */}
-      <section
-        ref={featuresRef}
-        className="py-24 md:py-32 px-6 sm:px-10 md:px-16"
-        style={{ background: PAPER }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16 max-w-xl">
-            <span
-              className="text-xs uppercase tracking-[0.3em] block mb-3"
-              style={{ fontFamily: MONO, color: RED }}
-            >
-              Capacidades
-            </span>
-            <h2
-              className="text-3xl sm:text-4xl font-bold"
-              style={{ fontFamily: HEADING }}
-            >
-              Lo que hacemos
-              <span style={{ color: RED }}>.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 — Diagnostic Shuffler */}
-            <div
-              className="feature-card p-6 border border-black/10 shadow-sm hover:shadow-lg transition-shadow duration-500"
-              style={{
-                background: OFFWHITE,
-                borderRadius: "2rem",
-              }}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Zap size={16} style={{ color: RED }} />
-                <span
-                  className="text-[10px] uppercase tracking-widest font-bold"
-                  style={{ color: "#999", fontFamily: MONO }}
-                >
-                  AI Aplicada, No Teoría
-                </span>
-              </div>
-              <h3
-                className="text-lg font-bold mb-1"
-                style={{ fontFamily: HEADING }}
-              >
-                Diagnóstico Inteligente
-              </h3>
-              <p
-                className="text-xs leading-relaxed mb-4"
-                style={{ color: "#777" }}
-              >
-                Founders con experiencia real implementando AI en
-                operaciones.
-              </p>
-              <DiagnosticShuffler />
-            </div>
-
-            {/* Card 2 — Telemetry Typewriter */}
-            <div
-              className="feature-card p-6 border border-black/10 shadow-sm hover:shadow-lg transition-shadow duration-500"
-              style={{
-                background: OFFWHITE,
-                borderRadius: "2rem",
-              }}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Globe size={16} style={{ color: RED }} />
-                <span
-                  className="text-[10px] uppercase tracking-widest font-bold"
-                  style={{ color: "#999", fontFamily: MONO }}
-                >
-                  Agnósticos al Sistema
-                </span>
-              </div>
-              <h3
-                className="text-lg font-bold mb-1"
-                style={{ fontFamily: HEADING }}
-              >
-                Telemetría en Vivo
-              </h3>
-              <p
-                className="text-xs leading-relaxed mb-4"
-                style={{ color: "#777" }}
-              >
-                Nos adaptamos a tu stack: Google, Microsoft, o cualquier
-                plataforma.
-              </p>
-              <TelemetryTypewriter />
-            </div>
-
-            {/* Card 3 — Cursor Protocol Scheduler */}
-            <div
-              className="feature-card p-6 border border-black/10 shadow-sm hover:shadow-lg transition-shadow duration-500"
-              style={{
-                background: OFFWHITE,
-                borderRadius: "2rem",
-              }}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <Users size={16} style={{ color: RED }} />
-                <span
-                  className="text-[10px] uppercase tracking-widest font-bold"
-                  style={{ color: "#999", fontFamily: MONO }}
-                >
-                  Co-diseño Empático
-                </span>
-              </div>
-              <h3
-                className="text-lg font-bold mb-1"
-                style={{ fontFamily: HEADING }}
-              >
-                Protocolo de Agenda
-              </h3>
-              <p
-                className="text-xs leading-relaxed mb-4"
-                style={{ color: "#777" }}
-              >
-                Prototipos, MVPs y metodologías centradas en el cliente.
-              </p>
-              <CursorScheduler />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═════════════════════ 3. PHILOSOPHY ═════════════════════ */}
-      <section
-        ref={philosophyRef}
-        className="relative py-32 md:py-40 px-6 sm:px-10 md:px-16 overflow-hidden"
-        style={{ background: BLACK }}
-      >
-        {/* Texture overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.06]"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1520608421741-68228b76b6df?auto=format&fit=crop&w=1920&q=80)`,
-          }}
-        />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          {/* Line 1 — smaller */}
-          <p
-            className="text-base sm:text-lg md:text-xl leading-relaxed mb-8"
-            style={{ color: `${PAPER}99` }}
-          >
-            {philLine1.split(" ").map((word, i) => (
-              <span key={i} className="phil-word inline-block mr-[0.3em]">
-                {word}
-              </span>
-            ))}
-          </p>
-          {/* Line 2 — large DM Serif Display */}
-          <div
-            className="leading-tight"
-            style={{
-              fontFamily: DRAMA,
-              fontStyle: "italic",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            }}
-          >
-            {philLine2Words.map((w, i) => (
-              <span
-                key={i}
-                className="phil-word inline-block mr-[0.25em]"
-                style={{
-                  color: w.highlight ? RED : PAPER,
-                  fontWeight: w.highlight ? 700 : 400,
-                }}
-              >
-                {w.text}
-              </span>
-            ))}
-          </div>
-          {/* Divider line */}
-          <div
-            className="mt-16 w-16 h-[2px]"
-            style={{ background: RED }}
-          />
-          <p
-            className="mt-6 text-sm max-w-md"
-            style={{ color: `${PAPER}77`, fontFamily: MONO }}
-          >
-            Consultoría de tecnología y transformación digital con AI —
-            diseñada desde la empatía.
-          </p>
-        </div>
-      </section>
-
-      {/* ═════════════════════ 4. PROTOCOL ═════════════════════ */}
-      <section
-        ref={protocolRef}
-        className="py-24 md:py-32 px-6 sm:px-10 md:px-16"
-        style={{ background: OFFWHITE }}
-      >
-        <div className="max-w-5xl mx-auto mb-16">
-          <span
-            className="text-xs uppercase tracking-[0.3em] block mb-3"
-            style={{ fontFamily: MONO, color: RED }}
-          >
-            Metodología
-          </span>
-          <h2
-            className="text-3xl sm:text-4xl font-bold"
-            style={{ fontFamily: HEADING }}
-          >
-            Protocolo de Transformación
-            <span style={{ color: RED }}>.</span>
-          </h2>
-        </div>
-
-        {/* Stacking Protocol Cards */}
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Card 01 — Diagnóstico */}
-          <div
-            ref={card1Ref}
-            className="rounded-[2rem] border border-black/10 p-8 sm:p-12 shadow-md"
-            style={{ background: "#fff" }}
-          >
-            <div className="flex flex-col sm:flex-row items-start gap-8">
-              <div className="flex-1">
-                <span
-                  className="text-xs uppercase tracking-[0.3em] block mb-2"
-                  style={{ fontFamily: MONO, color: RED }}
-                >
-                  Fase
-                </span>
-                <h3
-                  className="text-4xl sm:text-5xl font-bold mb-4"
-                  style={{ fontFamily: HEADING }}
-                >
-                  01{" "}
-                  <span
-                    style={{
-                      fontFamily: DRAMA,
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                    }}
-                  >
-                    Diagnóstico
-                  </span>
-                </h3>
-                <p
-                  className="text-sm leading-relaxed max-w-sm"
-                  style={{ color: "#777" }}
-                >
-                  Analizamos tu ecosistema tecnológico actual,
-                  identificamos oportunidades de automatización y creamos
-                  un mapa de transformación personalizado.
-                </p>
-              </div>
-              <div
-                className="flex items-center justify-center w-32 h-32 rounded-2xl"
-                style={{ background: OFFWHITE }}
-              >
-                <RotatingGeometric />
-              </div>
-            </div>
-          </div>
-
-          {/* Card 02 — Prototipado */}
-          <div
-            ref={card2Ref}
-            className="rounded-[2rem] border border-black/10 p-8 sm:p-12 shadow-md"
-            style={{ background: "#fff" }}
-          >
-            <div className="flex flex-col sm:flex-row items-start gap-8">
-              <div className="flex-1">
-                <span
-                  className="text-xs uppercase tracking-[0.3em] block mb-2"
-                  style={{ fontFamily: MONO, color: RED }}
-                >
-                  Fase
-                </span>
-                <h3
-                  className="text-4xl sm:text-5xl font-bold mb-4"
-                  style={{ fontFamily: HEADING }}
-                >
-                  02{" "}
-                  <span
-                    style={{
-                      fontFamily: DRAMA,
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                    }}
-                  >
-                    Prototipado
-                  </span>
-                </h3>
-                <p
-                  className="text-sm leading-relaxed max-w-sm"
-                  style={{ color: "#777" }}
-                >
-                  Construimos MVPs funcionales en sprints cortos.
-                  Validamos con usuarios reales antes de escalar — sin
-                  desperdiciar recursos.
-                </p>
-              </div>
-              <div
-                className="flex items-center justify-center w-32 h-32 rounded-2xl"
-                style={{ background: OFFWHITE }}
-              >
-                <ScanningGrid />
-              </div>
-            </div>
-          </div>
-
-          {/* Card 03 — Implementación */}
-          <div
-            ref={card3Ref}
-            className="rounded-[2rem] border border-black/10 p-8 sm:p-12 shadow-md"
-            style={{ background: "#fff" }}
-          >
-            <div className="flex flex-col sm:flex-row items-start gap-8">
-              <div className="flex-1">
-                <span
-                  className="text-xs uppercase tracking-[0.3em] block mb-2"
-                  style={{ fontFamily: MONO, color: RED }}
-                >
-                  Fase
-                </span>
-                <h3
-                  className="text-4xl sm:text-5xl font-bold mb-4"
-                  style={{ fontFamily: HEADING }}
-                >
-                  03{" "}
-                  <span
-                    style={{
-                      fontFamily: DRAMA,
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                    }}
-                  >
-                    Implementación
-                  </span>
-                </h3>
-                <p
-                  className="text-sm leading-relaxed max-w-sm"
-                  style={{ color: "#777" }}
-                >
-                  Desplegamos la solución en producción con
-                  acompañamiento continuo, monitoreo y transferencia de
-                  conocimiento a tu equipo.
-                </p>
-              </div>
-              <div
-                className="flex items-center justify-center w-32 h-32 rounded-2xl"
-                style={{ background: OFFWHITE }}
-              >
-                <PulsingWaveform />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═════════════════════ 5. PRICING ═════════════════════ */}
-      <section
-        id="pricing"
-        ref={pricingRef}
-        className="py-24 md:py-32 px-6 sm:px-10 md:px-16"
-        style={{ background: PAPER }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <span
-              className="text-xs uppercase tracking-[0.3em] block mb-3"
-              style={{ fontFamily: MONO, color: RED }}
-            >
-              Inversión
-            </span>
-            <h2
-              className="text-3xl sm:text-4xl font-bold"
-              style={{ fontFamily: HEADING }}
-            >
-              Planes de Consultoría
-              <span style={{ color: RED }}>.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Esencial */}
-            <div
-              className="pricing-card rounded-[2rem] border border-black/10 p-8 flex flex-col"
-              style={{ background: OFFWHITE }}
-            >
-              <span
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: "#999" }}
-              >
-                Plan
-              </span>
-              <h3
-                className="text-2xl font-bold mb-1"
-                style={{ fontFamily: HEADING }}
-              >
-                Esencial
-              </h3>
-              <div className="flex items-baseline gap-1 mb-6">
-                <span
-                  className="text-4xl font-bold"
-                  style={{ fontFamily: HEADING }}
-                >
-                  $2.500
-                </span>
-                <span
-                  className="text-sm"
-                  style={{ color: "#999", fontFamily: MONO }}
-                >
-                  USD
-                </span>
-              </div>
-              <ul className="space-y-3 mb-8 flex-1">
-                {[
-                  "Diagnóstico inicial AI",
-                  "Mapa de oportunidades",
-                  "1 sesión de estrategia",
-                  "Reporte ejecutivo",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-sm"
-                    style={{ color: "#555" }}
-                  >
-                    <Check
-                      size={14}
-                      className="mt-0.5 shrink-0"
-                      style={{ color: RED }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#"
-                className="magnetic-btn block text-center py-3 rounded-full text-sm font-bold border transition-all hover:shadow-md"
-                style={{
-                  borderColor: BLACK,
-                  color: BLACK,
-                }}
-              >
-                Comenzar
-              </a>
-            </div>
-
-            {/* Avanzado — Featured */}
-            <div
-              className="pricing-card rounded-[2rem] border-2 p-8 flex flex-col relative overflow-hidden shadow-xl"
-              style={{
-                background: BLACK,
-                borderColor: RED,
-              }}
-            >
-              <div
-                className="absolute top-6 right-6 px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold"
-                style={{
-                  background: RED,
-                  color: "#fff",
-                  fontFamily: MONO,
-                }}
-              >
-                Popular
-              </div>
-              <span
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: `${PAPER}66` }}
-              >
-                Plan
-              </span>
-              <h3
-                className="text-2xl font-bold mb-1"
-                style={{ fontFamily: HEADING, color: PAPER }}
-              >
-                Avanzado
-              </h3>
-              <div className="flex items-baseline gap-1 mb-6">
-                <span
-                  className="text-4xl font-bold"
-                  style={{ fontFamily: HEADING, color: PAPER }}
-                >
-                  $7.500
-                </span>
-                <span
-                  className="text-sm"
-                  style={{ color: `${PAPER}66`, fontFamily: MONO }}
-                >
-                  USD
-                </span>
-              </div>
-              <ul className="space-y-3 mb-8 flex-1">
-                {[
-                  "Todo en Esencial",
-                  "Prototipo funcional (MVP)",
-                  "4 sesiones de co-diseño",
-                  "Integración con tu stack",
-                  "Soporte por 30 días",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-sm"
-                    style={{ color: `${PAPER}bb` }}
-                  >
-                    <Check
-                      size={14}
-                      className="mt-0.5 shrink-0"
-                      style={{ color: RED }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#"
-                className="magnetic-btn block text-center py-3 rounded-full text-sm font-bold transition-all hover:brightness-110"
-                style={{
-                  background: RED,
-                  color: "#fff",
-                }}
-              >
-                Agenda una Reunión
-              </a>
-            </div>
-
-            {/* Enterprise */}
-            <div
-              className="pricing-card rounded-[2rem] border border-black/10 p-8 flex flex-col"
-              style={{ background: OFFWHITE }}
-            >
-              <span
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: "#999" }}
-              >
-                Plan
-              </span>
-              <h3
-                className="text-2xl font-bold mb-1"
-                style={{ fontFamily: HEADING }}
-              >
-                Enterprise
-              </h3>
-              <div className="flex items-baseline gap-1 mb-6">
-                <span
-                  className="text-4xl font-bold"
-                  style={{
-                    fontFamily: DRAMA,
-                    fontStyle: "italic",
-                  }}
-                >
-                  Personalizado
-                </span>
-              </div>
-              <ul className="space-y-3 mb-8 flex-1">
-                {[
-                  "Todo en Avanzado",
-                  "Implementación completa",
-                  "Equipo dedicado",
-                  "Transferencia de conocimiento",
-                  "SLA personalizado",
-                  "Soporte continuo",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-sm"
-                    style={{ color: "#555" }}
-                  >
-                    <Check
-                      size={14}
-                      className="mt-0.5 shrink-0"
-                      style={{ color: RED }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#"
-                className="magnetic-btn block text-center py-3 rounded-full text-sm font-bold border transition-all hover:shadow-md"
-                style={{
-                  borderColor: BLACK,
-                  color: BLACK,
-                }}
-              >
-                Contactar
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═════════════════════ 6. FOOTER ═════════════════════ */}
-      <footer
-        className="px-6 sm:px-10 md:px-16 pt-16 md:pt-24 pb-8"
-        style={{
-          background: BLACK,
-          borderTopLeftRadius: "4rem",
-          borderTopRightRadius: "4rem",
-          color: PAPER,
-        }}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-            {/* Brand column */}
-            <div className="lg:col-span-1">
-              <h4
-                className="text-2xl font-bold mb-4"
-                style={{ fontFamily: HEADING }}
-              >
-                New Era
-                <span style={{ color: RED }}>.</span>
-              </h4>
-              <p
-                className="text-sm leading-relaxed mb-6"
-                style={{ color: `${PAPER}88` }}
-              >
-                Consultoría de tecnología y transformación digital con AI.
-              </p>
-              <div className="flex items-center gap-2">
-                <span
-                  className="inline-block w-2 h-2 rounded-full"
-                  style={{
-                    background: "#22c55e",
-                    animation: "pulseGlow 2s ease-in-out infinite",
-                  }}
-                />
-                <span
-                  className="text-[10px] uppercase tracking-widest"
-                  style={{
-                    fontFamily: MONO,
-                    color: `${PAPER}66`,
-                  }}
-                >
-                  Sistema Operacional
-                </span>
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <div>
-              <h5
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: RED }}
-              >
-                Navegación
-              </h5>
-              <ul className="space-y-3">
-                {[
-                  "Capacidades",
-                  "Metodología",
-                  "Planes",
-                  "Contacto",
-                ].map((item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
-                      className="link-lift text-sm inline-flex items-center gap-1 transition-colors"
-                      style={{ color: `${PAPER}88` }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.color = PAPER)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.color = `${PAPER}88`)
-                      }
-                    >
-                      <ChevronRight size={12} style={{ color: RED }} />
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h5
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: RED }}
-              >
-                Contacto
-              </h5>
-              <ul className="space-y-3">
-                <li
-                  className="flex items-center gap-2 text-sm"
-                  style={{ color: `${PAPER}88` }}
-                >
-                  <Mail size={14} style={{ color: RED }} />
-                  hola@newera.ai
-                </li>
-                <li
-                  className="flex items-center gap-2 text-sm"
-                  style={{ color: `${PAPER}88` }}
-                >
-                  <Phone size={14} style={{ color: RED }} />
-                  +52 55 1234 5678
-                </li>
-                <li
-                  className="flex items-center gap-2 text-sm"
-                  style={{ color: `${PAPER}88` }}
-                >
-                  <MapPin size={14} style={{ color: RED }} />
-                  Ciudad de México
-                </li>
-              </ul>
-            </div>
-
-            {/* Status */}
-            <div>
-              <h5
-                className="text-[10px] uppercase tracking-widest mb-4"
-                style={{ fontFamily: MONO, color: RED }}
-              >
-                Estado del Sistema
-              </h5>
-              <div
-                className="rounded-xl p-4 border"
-                style={{
-                  background: `${PAPER}08`,
-                  borderColor: `${PAPER}15`,
-                }}
-              >
-                <div className="space-y-2">
-                  {[
-                    { label: "API Gateway", status: "Operativo" },
-                    { label: "AI Engine", status: "Operativo" },
-                    { label: "Dashboard", status: "Operativo" },
-                  ].map((s) => (
-                    <div
-                      key={s.label}
-                      className="flex items-center justify-between"
-                    >
-                      <span
-                        className="text-[10px]"
-                        style={{
-                          fontFamily: MONO,
-                          color: `${PAPER}66`,
-                        }}
-                      >
-                        {s.label}
-                      </span>
-                      <span
-                        className="text-[10px] flex items-center gap-1"
-                        style={{ fontFamily: MONO, color: "#22c55e" }}
-                      >
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500" />
-                        {s.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div
-            className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4"
-            style={{ borderColor: `${PAPER}15` }}
-          >
-            <span
-              className="text-[10px] uppercase tracking-widest"
-              style={{ fontFamily: MONO, color: `${PAPER}44` }}
-            >
-              &copy; {new Date().getFullYear()} New Era. Todos los
-              derechos reservados.
-            </span>
-            <div
-              className="flex gap-6 text-[10px] uppercase tracking-widest"
-              style={{ fontFamily: MONO, color: `${PAPER}44` }}
-            >
-              <a
-                href="#"
-                className="link-lift transition-colors"
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = PAPER)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = `${PAPER}44`)
-                }
-              >
-                Privacidad
-              </a>
-              <a
-                href="#"
-                className="link-lift transition-colors"
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = PAPER)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = `${PAPER}44`)
-                }
-              >
-                Términos
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+      <div className="brutalist-page relative w-full min-h-screen -mt-14">
+        <div className="noise-overlay"></div>
+        <Hero />
+        <Features />
+        <Philosophy />
+        <Protocol />
+        <BrutalistFooter />
+      </div>
+    </>
   );
 }

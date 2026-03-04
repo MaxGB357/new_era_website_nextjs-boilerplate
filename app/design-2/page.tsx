@@ -1,16 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
-  Zap,
-  Globe,
-  Users,
-  ChevronRight,
-  Check,
-  ExternalLink,
+  Calendar,
+  MousePointer2,
+  Activity,
 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,552 +23,433 @@ const T = {
   mono: "'JetBrains Mono', monospace",
 };
 
-/* ──────────────────────────── HELPER: typing effect ────────────────── */
-function useTypingEffect(messages: string[], speed = 45, pause = 1600) {
-  const [display, setDisplay] = useState("");
-  const [msgIdx, setMsgIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const current = messages[msgIdx];
-    let timeout: ReturnType<typeof setTimeout>;
-
-    if (!isDeleting && charIdx < current.length) {
-      timeout = setTimeout(() => setCharIdx((c) => c + 1), speed);
-    } else if (!isDeleting && charIdx === current.length) {
-      timeout = setTimeout(() => setIsDeleting(true), pause);
-    } else if (isDeleting && charIdx > 0) {
-      timeout = setTimeout(() => setCharIdx((c) => c - 1), speed / 2);
-    } else if (isDeleting && charIdx === 0) {
-      setIsDeleting(false);
-      setMsgIdx((i) => (i + 1) % messages.length);
-    }
-
-    setDisplay(current.slice(0, charIdx));
-    return () => clearTimeout(timeout);
-  }, [charIdx, isDeleting, msgIdx, messages, speed, pause]);
-
-  return display;
-}
-
 /* ══════════════════════════════════════════════════════════════════════ */
 /*  SECTION 1 — HERO                                                     */
 /* ══════════════════════════════════════════════════════════════════════ */
 function Hero() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from("[data-hero-anim]", {
-        y: 60,
+      const tl = gsap.timeline();
+      tl.from(".hero-text", {
+        y: 40,
         opacity: 0,
-        duration: 1.1,
+        duration: 1.2,
+        stagger: 0.15,
         ease: "power3.out",
-        stagger: 0.18,
-        delay: 0.3,
+        delay: 0.2,
       });
-    }, sectionRef);
+    }, containerRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      ref={sectionRef}
-      className="relative flex items-end overflow-hidden"
-      style={{ height: "100dvh" }}
+      ref={containerRef}
+      className="relative h-[100dvh] w-full overflow-hidden flex items-end pb-24 md:pb-32 px-6 md:px-12"
     >
-      {/* Background image */}
+      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1920&q=80)",
+            'url("https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1920&q=80")',
         }}
       />
-
-      {/* Gradient overlay */}
+      {/* Gradient Overlay */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 z-10"
         style={{
-          background: `linear-gradient(180deg, ${T.obsidian}cc 0%, ${T.obsidian}ee 50%, ${T.obsidian} 100%)`,
+          background: `linear-gradient(to top, ${T.obsidian}, ${T.obsidian}99 40%, transparent)`,
         }}
       />
 
       {/* Content */}
-      <div className="relative z-10 w-full px-6 pb-20 sm:px-12 md:px-20 lg:px-28 max-w-[1400px]">
-        <p
-          data-hero-anim
-          className="mb-2 text-xs uppercase tracking-[0.3em]"
-          style={{ color: T.champagne, fontFamily: T.mono }}
-        >
-          Consultoría AI &mdash; Transformación Digital
-        </p>
-
-        <h1 data-hero-anim>
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col items-start">
+        <h1 className="flex flex-col" style={{ color: T.ivory }}>
           <span
-            className="block text-[clamp(1.5rem,3vw,2.2rem)] font-bold leading-tight"
-            style={{
-              fontFamily: T.heading,
-              letterSpacing: "-0.02em",
-              color: T.ivory,
-            }}
+            className="hero-text font-bold text-3xl md:text-5xl lg:text-6xl tracking-tight mb-2"
+            style={{ fontFamily: T.heading }}
           >
-            Vision meets
+            La Inteligencia Artificial es la
           </span>
           <span
-            className="block text-[clamp(3rem,8vw,5.5rem)] leading-[1.05]"
-            style={{
-              fontFamily: T.drama,
-              fontStyle: "italic",
-              color: T.ivory,
-            }}
+            className="hero-text italic text-7xl md:text-8xl lg:text-[140px] leading-[0.85] pr-4"
+            style={{ fontFamily: T.drama, color: T.champagne }}
           >
-            Precision.
+            Evolución.
           </span>
         </h1>
-
         <p
-          data-hero-anim
-          className="mt-6 max-w-lg text-[clamp(0.9rem,1.5vw,1.1rem)] leading-relaxed"
+          className="hero-text mt-8 max-w-xl text-lg md:text-xl leading-relaxed"
           style={{ color: `${T.ivory}cc` }}
         >
-          Consultoría de transformación digital con AI — precisión artesanal
-          para tu empresa.
+          Diseñamos e implementamos soluciones de Inteligencia Artificial a
+          medida en tu empresa.
         </p>
-
-        <div data-hero-anim className="mt-10 flex flex-wrap items-center gap-4">
-          <a
-            href="#pricing"
-            className="magnetic-btn inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(201,168,76,0.35)]"
+        <div className="hero-text mt-10 flex flex-col sm:flex-row gap-4">
+          <button
+            className="btn-magnetic px-8 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-[0_0_30px_rgba(201,168,76,0.35)]"
             style={{
               background: T.champagne,
               color: T.obsidian,
               fontFamily: T.heading,
-              letterSpacing: "-0.01em",
             }}
           >
-            Agenda una Reunión
-            <ArrowRight size={16} strokeWidth={2.5} />
-          </a>
-          <a
-            href="#features"
-            className="link-lift inline-flex items-center gap-1.5 text-sm"
-            style={{ color: `${T.ivory}99`, fontFamily: T.heading }}
+            <Calendar className="w-5 h-5" />
+            Agendar una reunión
+          </button>
+          <button
+            className="btn-magnetic backdrop-blur-md px-8 py-4 rounded-full text-base font-semibold flex items-center justify-center gap-3 hover:bg-white/20 transition-colors"
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: T.ivory,
+            }}
           >
-            Conoce el proceso
-            <ChevronRight size={14} />
-          </a>
+            Hablar con Agente AI
+          </button>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        data-hero-anim
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span
-          className="block h-10 w-px animate-pulse"
-          style={{ background: `${T.champagne}66` }}
-        />
       </div>
     </section>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-/*  SECTION 2 — FEATURES (3 Interactive Cards)                           */
+/*  INTERACTIVE CARDS                                                    */
 /* ══════════════════════════════════════════════════════════════════════ */
 
 /* ── Card 1: Diagnostic Shuffler ───────────────────────────────────── */
 function DiagnosticShuffler() {
-  const labels = [
-    "Automatización de Procesos",
-    "Análisis Predictivo",
-    "Integración AI",
-  ];
-  const [active, setActive] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [items, setItems] = useState([
+    "Operaciones Optimizadas",
+    "Resultados Directos",
+    "Cero Teoría",
+  ]);
 
   useEffect(() => {
-    const iv = setInterval(() => setActive((a) => (a + 1) % 3), 3000);
-    return () => clearInterval(iv);
+    const interval = setInterval(() => {
+      setItems((prev) => {
+        const newItems = [...prev];
+        const last = newItems.pop()!;
+        newItems.unshift(last);
+        return newItems;
+      });
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const cards = containerRef.current.querySelectorAll("[data-shuffle-card]");
-    cards.forEach((card, i) => {
-      const offset = ((i - active + 3) % 3);
-      gsap.to(card, {
-        y: offset * 14,
-        x: offset * 6,
-        scale: 1 - offset * 0.04,
-        zIndex: 3 - offset,
-        opacity: 1 - offset * 0.25,
-        duration: 0.6,
-        ease: "back.out(1.7)",
-      });
-    });
-  }, [active]);
-
   return (
-    <div
-      className="flex flex-col items-center justify-between h-full p-8 rounded-[2rem] border shadow-lg"
-      style={{
-        background: T.ivory,
-        borderColor: `${T.slate}15`,
-        boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
-      }}
-    >
-      <div className="flex items-center gap-2 self-start mb-4">
-        <Zap size={18} style={{ color: T.champagne }} />
-        <span
-          className="text-xs uppercase tracking-[0.15em] font-medium"
-          style={{ color: T.slate, fontFamily: T.mono }}
-        >
-          Diagnóstico
-        </span>
-      </div>
+    <div className="h-48 relative flex items-center justify-center overflow-hidden w-full">
+      {items.map((item, i) => {
+        const isTop = i === 0;
+        const isMiddle = i === 1;
 
-      <div ref={containerRef} className="relative w-full h-40 flex items-center justify-center my-4">
-        {labels.map((label, i) => (
+        return (
           <div
-            key={label}
-            data-shuffle-card
-            className="absolute w-[85%] rounded-xl px-5 py-6 border cursor-pointer"
+            key={item}
+            className="absolute w-[85%] rounded-2xl p-4 flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
             style={{
-              background: "white",
-              borderColor: active === i ? T.champagne : `${T.slate}15`,
-              boxShadow:
-                active === i
-                  ? `0 4px 24px ${T.champagne}30`
-                  : "0 2px 12px rgba(0,0,0,0.04)",
+              background: T.slate,
+              border: `1px solid ${T.champagne}20`,
+              boxShadow: isTop
+                ? `0 4px 24px ${T.champagne}15`
+                : "0 2px 12px rgba(0,0,0,0.2)",
+              transform: `translateY(${isTop ? "0px" : isMiddle ? "16px" : "32px"}) scale(${isTop ? 1 : isMiddle ? 0.95 : 0.9})`,
+              opacity: isTop ? 1 : isMiddle ? 0.7 : 0.4,
+              zIndex: 3 - i,
             }}
-            onClick={() => setActive(i)}
           >
             <span
-              className="text-xs font-medium uppercase tracking-[0.1em]"
-              style={{ color: T.champagne, fontFamily: T.mono }}
+              className="text-xs font-medium uppercase tracking-wider"
+              style={{ color: T.ivory, fontFamily: T.mono }}
             >
-              {String(i + 1).padStart(2, "0")}
+              {item}
             </span>
-            <p
-              className="mt-1 text-sm font-semibold"
-              style={{ color: T.slate, fontFamily: T.heading }}
-            >
-              {label}
-            </p>
+            <Activity className="w-4 h-4" style={{ color: T.champagne }} />
           </div>
-        ))}
-      </div>
-
-      <div className="mt-auto text-center">
-        <h3
-          className="text-xl font-bold"
-          style={{
-            fontFamily: T.heading,
-            letterSpacing: "-0.02em",
-            color: T.slate,
-          }}
-        >
-          AI Aplicada, No Teoría
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
-          Founders con experiencia real implementando AI en operaciones.
-        </p>
-      </div>
+        );
+      })}
     </div>
   );
 }
 
 /* ── Card 2: Telemetry Typewriter ──────────────────────────────────── */
 function TelemetryTypewriter() {
-  const messages = [
-    "Conectando con Google Workspace...",
-    "Sincronizando Microsoft 365...",
-    "Integrando sistema legacy...",
-    "Optimizando flujos de trabajo...",
-  ];
-  const typed = useTypingEffect(messages, 40, 1400);
+  const [text, setText] = useState("");
+  const fullText =
+    "Integrando Google Suite...\nConectando Microsoft Office...\nAjustando a tu empresa...\n> Sistema Agnóstico Activo.";
+
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) {
+        setTimeout(() => {
+          i = 0;
+        }, 4000);
+      }
+    }, 50);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div
-      className="flex flex-col h-full p-8 rounded-[2rem] border shadow-lg"
-      style={{
-        background: T.ivory,
-        borderColor: `${T.slate}15`,
-        boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
-      }}
+      className="h-48 w-full rounded-2xl p-5 flex flex-col relative overflow-hidden"
+      style={{ background: T.obsidian, border: `1px solid ${T.champagne}15` }}
     >
       <div className="flex items-center gap-2 mb-4">
-        <Globe size={18} style={{ color: T.champagne }} />
+        <div
+          className="w-2 h-2 rounded-full animate-pulse"
+          style={{ background: T.champagne }}
+        />
         <span
-          className="text-xs uppercase tracking-[0.15em] font-medium"
-          style={{ color: T.slate, fontFamily: T.mono }}
+          className="text-[10px] uppercase tracking-widest"
+          style={{ color: `${T.ivory}50`, fontFamily: T.mono }}
         >
-          Telemetría
+          Live Feed
         </span>
       </div>
-
-      {/* Terminal */}
-      <div
-        className="flex-1 rounded-xl p-5 my-4"
-        style={{ background: T.obsidian }}
+      <pre
+        className="text-xs whitespace-pre-wrap leading-relaxed"
+        style={{ color: `${T.ivory}cc`, fontFamily: T.mono }}
       >
-        {/* Status bar */}
-        <div className="flex items-center gap-2 mb-4">
-          <span
-            className="block h-2 w-2 rounded-full animate-pulse"
-            style={{ background: T.champagne }}
-          />
-          <span
-            className="text-[10px] uppercase tracking-[0.15em] font-medium"
-            style={{ color: T.champagne, fontFamily: T.mono }}
-          >
-            Live Feed
-          </span>
-        </div>
-
-        <p
-          className="text-sm leading-relaxed"
-          style={{ color: T.ivory, fontFamily: T.mono }}
-        >
-          <span style={{ color: T.champagne }}>$</span>{" "}
-          {typed}
-          <span className="inline-block w-[2px] h-4 align-middle ml-0.5 animate-pulse" style={{ background: T.champagne }} />
-        </p>
-
-        {/* Faux log lines */}
-        <div className="mt-4 space-y-1.5">
-          {["OK — Autenticación", "OK — Permisos", "OK — Sincronización"].map(
-            (line, i) => (
-              <p
-                key={i}
-                className="text-[11px] opacity-40"
-                style={{ color: T.ivory, fontFamily: T.mono }}
-              >
-                [{String(i + 1).padStart(2, "0")}] {line}
-              </p>
-            )
-          )}
-        </div>
-      </div>
-
-      <div className="mt-auto text-center">
-        <h3
-          className="text-xl font-bold"
-          style={{
-            fontFamily: T.heading,
-            letterSpacing: "-0.02em",
-            color: T.slate,
-          }}
-        >
-          Agnósticos al Sistema
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
-          Nos adaptamos a tu stack: Google, Microsoft, o cualquier plataforma.
-        </p>
-      </div>
+        {text}
+        <span
+          className="inline-block w-2 h-3 ml-1 animate-pulse"
+          style={{ background: T.champagne }}
+        />
+      </pre>
     </div>
   );
 }
 
 /* ── Card 3: Cursor Protocol Scheduler ─────────────────────────────── */
-function CursorScheduler() {
-  const days = ["L", "M", "M", "J", "V", "S", "D"];
-  const [cursorPos, setCursorPos] = useState({ row: 0, col: 0 });
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+function CursorProtocolScheduler() {
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dayRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLDivElement>(null);
+  const [activeDay, setActiveDay] = useState(false);
 
   useEffect(() => {
-    let row = 0;
-    let col = 0;
-    const sequence = [
-      [0, 1], [0, 3], [1, 0], [1, 2], [1, 4], [2, 1], [2, 3], [2, 5],
-      [3, 0], [3, 2], [3, 4], [3, 6],
-    ];
-    let step = 0;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
 
-    const iv = setInterval(() => {
-      const [r, c] = sequence[step % sequence.length];
-      row = r;
-      col = c;
-      setCursorPos({ row, col });
-      setSelected((prev) => {
-        const next = new Set(prev);
-        const key = `${r}-${c}`;
-        if (next.has(key)) {
-          next.delete(key);
-        } else {
-          next.add(key);
-        }
-        return next;
-      });
-      step++;
-    }, 900);
+      tl.set(cursorRef.current, { x: 0, y: 0, opacity: 0 });
+      tl.set(dayRef.current, { scale: 1, backgroundColor: "transparent" });
+      tl.set(btnRef.current, { scale: 1 });
 
-    return () => clearInterval(iv);
+      tl.to(cursorRef.current, { opacity: 1, duration: 0.3 })
+        .to(cursorRef.current, {
+          x: 60,
+          y: 40,
+          duration: 0.8,
+          ease: "power2.inOut",
+        })
+        .to(cursorRef.current, { scale: 0.9, duration: 0.1 })
+        .to(dayRef.current, { scale: 0.95, duration: 0.1 }, "<")
+        .add(() => setActiveDay(true))
+        .to(dayRef.current, {
+          backgroundColor: T.champagne,
+          color: T.obsidian,
+          duration: 0.1,
+        })
+        .to(cursorRef.current, { scale: 1, duration: 0.1 })
+        .to(dayRef.current, { scale: 1, duration: 0.1 }, "<")
+        .to(cursorRef.current, {
+          x: 140,
+          y: 100,
+          duration: 0.8,
+          ease: "power2.inOut",
+          delay: 0.2,
+        })
+        .to(cursorRef.current, { scale: 0.9, duration: 0.1 })
+        .to(btnRef.current, { scale: 0.95, duration: 0.1 }, "<")
+        .to(cursorRef.current, { scale: 1, duration: 0.1 })
+        .to(btnRef.current, { scale: 1, duration: 0.1 }, "<")
+        .to(cursorRef.current, { opacity: 0, duration: 0.3, delay: 0.5 })
+        .add(() => setActiveDay(false));
+    });
+    return () => ctx.revert();
   }, []);
 
-  const weeks = 4;
+  const days = ["S", "M", "T", "W", "T", "F", "S"];
 
   return (
     <div
-      className="flex flex-col h-full p-8 rounded-[2rem] border shadow-lg"
+      className="h-48 w-full rounded-2xl p-5 relative flex flex-col justify-between"
       style={{
-        background: T.ivory,
-        borderColor: `${T.slate}15`,
-        boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+        background: T.slate,
+        border: `1px solid ${T.champagne}15`,
+        boxShadow: "0 4px 24px rgba(0,0,0,0.2)",
       }}
     >
-      <div className="flex items-center gap-2 mb-4">
-        <Users size={18} style={{ color: T.champagne }} />
-        <span
-          className="text-xs uppercase tracking-[0.15em] font-medium"
-          style={{ color: T.slate, fontFamily: T.mono }}
-        >
-          Calendario
-        </span>
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center my-4">
-        {/* Header row */}
-        <div className="grid grid-cols-7 gap-2 mb-2 w-full max-w-[280px]">
-          {days.map((d, i) => (
-            <div
-              key={i}
-              className="text-center text-[10px] font-semibold uppercase"
-              style={{ color: `${T.slate}88`, fontFamily: T.mono }}
-            >
-              {d}
-            </div>
-          ))}
-        </div>
-
-        {/* Week rows */}
-        {Array.from({ length: weeks }).map((_, row) => (
-          <div key={row} className="grid grid-cols-7 gap-2 mb-2 w-full max-w-[280px]">
-            {days.map((_, col) => {
-              const isSelected = selected.has(`${row}-${col}`);
-              const isCursor = cursorPos.row === row && cursorPos.col === col;
-              return (
-                <div
-                  key={col}
-                  className="relative aspect-square rounded-lg flex items-center justify-center text-xs font-medium transition-all duration-300"
-                  style={{
-                    background: isSelected ? T.champagne : "white",
-                    color: isSelected ? T.obsidian : `${T.slate}66`,
-                    border: `1.5px solid ${isSelected ? T.champagne : `${T.slate}15`}`,
-                    fontFamily: T.mono,
-                    boxShadow: isSelected
-                      ? `0 2px 12px ${T.champagne}40`
-                      : "none",
-                  }}
-                >
-                  {row * 7 + col + 1}
-                  {/* SVG cursor */}
-                  {isCursor && (
-                    <svg
-                      className="absolute -top-1 -right-1 drop-shadow-md"
-                      width="16"
-                      height="20"
-                      viewBox="0 0 16 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M1 1L1 15L5 11L10 18L13 16L8 9L14 9L1 1Z"
-                        fill={T.champagne}
-                        stroke={T.obsidian}
-                        strokeWidth="1.2"
-                      />
-                    </svg>
-                  )}
-                </div>
-              );
-            })}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((d, i) => (
+          <div
+            key={i}
+            ref={i === 3 ? dayRef : null}
+            className="aspect-square rounded-md flex items-center justify-center text-xs font-medium transition-colors"
+            style={{
+              background:
+                i === 3 && activeDay ? T.champagne : `${T.ivory}10`,
+              color:
+                i === 3 && activeDay ? T.obsidian : `${T.ivory}50`,
+              fontFamily: T.mono,
+            }}
+          >
+            {d}
           </div>
         ))}
       </div>
 
-      <div className="mt-auto text-center">
-        <h3
-          className="text-xl font-bold"
+      <div className="flex justify-end">
+        <div
+          ref={btnRef}
+          className="text-[10px] uppercase tracking-wider px-4 py-2 rounded-full"
           style={{
-            fontFamily: T.heading,
-            letterSpacing: "-0.02em",
-            color: T.slate,
+            background: T.champagne,
+            color: T.obsidian,
+            fontFamily: T.mono,
+            fontWeight: 600,
           }}
         >
-          Co-diseño Empático
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
-          Prototipos, MVPs y metodologías centradas en el cliente.
-        </p>
+          Agendar MVP
+        </div>
+      </div>
+
+      {/* Cursor */}
+      <div
+        ref={cursorRef}
+        className="absolute top-0 left-0 z-10 pointer-events-none"
+        style={{ transform: "translate(0,0)" }}
+      >
+        <MousePointer2
+          className="w-5 h-5 drop-shadow-md"
+          style={{ color: T.obsidian, fill: T.ivory }}
+        />
       </div>
     </div>
   );
 }
 
-/* ── Features Section Wrapper ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  SECTION 2 — FEATURES                                                */
+/* ══════════════════════════════════════════════════════════════════════ */
 function Features() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from("[data-feature-card]", {
-        y: 80,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.2,
+      gsap.from(".feature-card", {
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: containerRef.current,
           start: "top 75%",
         },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
       });
-    }, sectionRef);
+    }, containerRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section
       id="features"
-      ref={sectionRef}
-      className="relative py-28 px-6 sm:px-12"
-      style={{ background: "white" }}
+      ref={containerRef}
+      className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto"
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 text-center">
-          <p
-            className="text-xs uppercase tracking-[0.3em] mb-3"
-            style={{ color: T.champagne, fontFamily: T.mono }}
+      <div className="mb-16">
+        <h2
+          className="font-bold text-3xl md:text-5xl tracking-tight"
+          style={{ fontFamily: T.heading, color: T.slate }}
+        >
+          Aplicación directa.
+          <br />
+          <span
+            className="italic font-normal"
+            style={{ fontFamily: T.drama, color: T.champagne }}
           >
-            Capacidades
-          </p>
-          <h2
-            className="text-[clamp(2rem,4vw,3rem)] font-bold"
-            style={{
-              fontFamily: T.heading,
-              letterSpacing: "-0.02em",
-              color: T.slate,
-            }}
-          >
-            Lo que nos{" "}
-            <span style={{ fontFamily: T.drama, fontStyle: "italic", color: T.champagne }}>
-              distingue
-            </span>
-          </h2>
+            Resultados reales.
+          </span>
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Card 1 */}
+        <div
+          className="feature-card rounded-[2rem] p-8 flex flex-col"
+          style={{
+            background: T.ivory,
+            border: `1px solid ${T.slate}15`,
+            boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+          }}
+        >
+          <DiagnosticShuffler />
+          <div className="mt-8">
+            <h3
+              className="text-xl font-bold mb-3"
+              style={{ fontFamily: T.heading, color: T.slate }}
+            >
+              Experiencia Real
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
+              Fundadores con experiencia aplicando AI en operaciones internas. No
+              ofrecemos teoría, sino aplicación directa con resultados.
+            </p>
+          </div>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
-          <div data-feature-card>
-            <DiagnosticShuffler />
+        {/* Card 2 */}
+        <div
+          className="feature-card rounded-[2rem] p-8 flex flex-col"
+          style={{
+            background: T.ivory,
+            border: `1px solid ${T.slate}15`,
+            boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+          }}
+        >
+          <TelemetryTypewriter />
+          <div className="mt-8">
+            <h3
+              className="text-xl font-bold mb-3"
+              style={{ fontFamily: T.heading, color: T.slate }}
+            >
+              Agnósticos al Sistema
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
+              Nos ajustamos a las circunstancias de tu empresa, ya sea Google
+              Suite, Microsoft Office u otros ecosistemas.
+            </p>
           </div>
-          <div data-feature-card>
-            <TelemetryTypewriter />
-          </div>
-          <div data-feature-card>
-            <CursorScheduler />
+        </div>
+
+        {/* Card 3 */}
+        <div
+          className="feature-card rounded-[2rem] p-8 flex flex-col"
+          style={{
+            background: T.ivory,
+            border: `1px solid ${T.slate}15`,
+            boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+          }}
+        >
+          <CursorProtocolScheduler />
+          <div className="mt-8">
+            <h3
+              className="text-xl font-bold mb-3"
+              style={{ fontFamily: T.heading, color: T.slate }}
+            >
+              Consultoría Empática
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: `${T.slate}99` }}>
+              Avanzamos mediante prototipos y MVPs para identificar y solucionar
+              todas las preocupaciones del cliente. Sin cajas negras.
+            </p>
           </div>
         </div>
       </div>
@@ -580,95 +458,77 @@ function Features() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-/*  SECTION 3 — PHILOSOPHY                                              */
+/*  SECTION 3 — PHILOSOPHY (Parallax Background)                        */
 /* ══════════════════════════════════════════════════════════════════════ */
 function Philosophy() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const words = gsap.utils.toArray<HTMLElement>("[data-word]");
-      words.forEach((word) => {
-        gsap.from(word, {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: word,
-            start: "top 85%",
-          },
-        });
+      gsap.to(".parallax-bg", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+        y: 100,
+        ease: "none",
       });
-    }, sectionRef);
+
+      gsap.from(".phil-text", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 60%",
+        },
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+      });
+    }, containerRef);
     return () => ctx.revert();
   }, []);
 
-  const firstLine = "La mayoría de las consultoras se enfocan en: vender soluciones predeterminadas.";
-  const secondLineA = "Nosotros nos enfocamos en: entender tu";
-  const secondLineB = "realidad";
-
   return (
     <section
-      ref={sectionRef}
-      className="relative overflow-hidden py-32 px-6 sm:px-12"
+      id="philosophy"
+      ref={containerRef}
+      className="relative py-32 md:py-48 px-6 md:px-12 overflow-hidden rounded-[3rem] mx-4 md:mx-8 my-12"
       style={{ background: T.obsidian }}
     >
-      {/* Background texture */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80)",
-        }}
-      />
+      {/* Background Texture */}
+      <div className="absolute inset-0 z-0 overflow-hidden opacity-[0.08]">
+        <div
+          className="parallax-bg absolute top-[-20%] left-0 w-full h-[140%] bg-cover bg-center"
+          style={{
+            backgroundImage:
+              'url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop")',
+          }}
+        />
+      </div>
 
-      <div className="relative z-10 mx-auto max-w-4xl">
-        {/* First line */}
-        <p className="flex flex-wrap gap-x-[0.35em] gap-y-1 text-[clamp(1rem,2vw,1.3rem)] leading-relaxed mb-10"
+      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center">
+        <p
+          className="phil-text text-lg md:text-2xl mb-8 max-w-2xl"
           style={{ color: `${T.ivory}99` }}
         >
-          {firstLine.split(" ").map((w, i) => (
-            <span key={i} data-word className="inline-block">
-              {w}
-            </span>
-          ))}
+          La mayoría de las consultoras se enfocan en: teoría abstracta y
+          soluciones predeterminadas &ldquo;out of the box&rdquo;.
         </p>
-
-        {/* Second line — large */}
-        <div className="flex flex-wrap gap-x-[0.35em] gap-y-2 items-baseline">
-          {secondLineA.split(" ").map((w, i) => (
-            <span
-              key={i}
-              data-word
-              className="inline-block text-[clamp(1.8rem,5vw,3.5rem)] leading-[1.15]"
-              style={{
-                fontFamily: T.drama,
-                fontStyle: "italic",
-                color: T.ivory,
-              }}
-            >
-              {w}
-            </span>
-          ))}
+        <h2
+          className="phil-text font-bold text-4xl md:text-6xl lg:text-7xl leading-tight"
+          style={{ fontFamily: T.heading, color: T.ivory }}
+        >
+          Nosotros nos enfocamos en: <br />
           <span
-            data-word
-            className="inline-block text-[clamp(1.8rem,5vw,3.5rem)] leading-[1.15] font-bold"
-            style={{
-              fontFamily: T.drama,
-              fontStyle: "italic",
-              color: T.champagne,
-            }}
+            className="italic font-normal text-6xl md:text-8xl lg:text-9xl"
+            style={{ fontFamily: T.drama, color: T.champagne }}
           >
-            {secondLineB}.
+            empatía y resultados.
           </span>
-        </div>
-
-        {/* Decorative line */}
-        <div
-          className="mt-16 h-px w-24 opacity-30"
-          style={{ background: T.champagne }}
-        />
+        </h2>
       </div>
     </section>
   );
@@ -678,7 +538,7 @@ function Philosophy() {
 /*  SECTION 4 — PROTOCOL (Sticky Stacking Cards)                        */
 /* ══════════════════════════════════════════════════════════════════════ */
 
-/* SVG Animations for each protocol card */
+/* SVG Animations */
 function RotatingCircles() {
   const ref = useRef<SVGSVGElement>(null);
   useEffect(() => {
@@ -789,458 +649,241 @@ function PulsingWaveform() {
 }
 
 function Protocol() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>("[data-protocol-card]");
+      const cards = gsap.utils.toArray(
+        ".protocol-card"
+      ) as HTMLElement[];
 
       cards.forEach((card, i) => {
-        if (i === cards.length - 1) return; // Skip last card
+        if (i === cards.length - 1) return;
 
         ScrollTrigger.create({
           trigger: card,
           start: "top 10%",
-          end: "bottom top",
+          endTrigger: containerRef.current,
+          end: "bottom bottom",
           pin: true,
           pinSpacing: false,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            gsap.to(card, {
-              scale: 1 - progress * 0.1,
-              filter: `blur(${progress * 20}px)`,
-              opacity: 1 - progress * 0.5,
-              duration: 0.1,
-              overwrite: "auto",
-            });
-          },
+          animation: gsap.to(card, {
+            scale: 0.9 - i * 0.05,
+            opacity: 0.5,
+            filter: "blur(10px)",
+            ease: "none",
+          }),
+          scrub: true,
         });
       });
-    }, sectionRef);
-
+    }, containerRef);
     return () => ctx.revert();
   }, []);
 
-  const protocols = [
+  const steps = [
     {
       num: "01",
-      title: "Diagnóstico",
-      desc: "Analizamos tu infraestructura actual, identificamos oportunidades de AI y construimos un mapa de transformación personalizado.",
+      title: "Diagnóstico Profundo",
+      desc: "Identificamos las preocupaciones reales de tu empresa antes de escribir una sola línea de código.",
       Visual: RotatingCircles,
-      bg: T.obsidian,
     },
     {
       num: "02",
-      title: "Prototipado",
-      desc: "Diseñamos y validamos prototipos funcionales. Iteramos rápidamente con feedback real de tu equipo.",
+      title: "Prototipado Ágil",
+      desc: "Avanzamos en base a múltiples maquetas y MVPs. Ajustamos la solución a tu ecosistema actual.",
       Visual: ScanningGrid,
-      bg: "#111118",
     },
     {
       num: "03",
-      title: "Implementación",
-      desc: "Desplegamos soluciones robustas, capacitamos a tu equipo y aseguramos adopción progresiva en toda la organización.",
+      title: "Implementación a Medida",
+      desc: "Despliegue de soluciones de IA que generan impacto directo en tus operaciones diarias.",
       Visual: PulsingWaveform,
-      bg: "#16161D",
-    },
-  ];
-
-  return (
-    <section ref={sectionRef} className="relative">
-      <div
-        className="py-20 px-6 sm:px-12 text-center"
-        style={{ background: "white" }}
-      >
-        <p
-          className="text-xs uppercase tracking-[0.3em] mb-3"
-          style={{ color: T.champagne, fontFamily: T.mono }}
-        >
-          Protocolo
-        </p>
-        <h2
-          className="text-[clamp(2rem,4vw,3rem)] font-bold"
-          style={{
-            fontFamily: T.heading,
-            letterSpacing: "-0.02em",
-            color: T.slate,
-          }}
-        >
-          Tres fases,{" "}
-          <span style={{ fontFamily: T.drama, fontStyle: "italic", color: T.champagne }}>
-            un resultado
-          </span>
-        </h2>
-      </div>
-
-      {protocols.map((p, i) => (
-        <div
-          key={i}
-          data-protocol-card
-          className="relative flex flex-col items-center justify-center px-6 sm:px-12 overflow-hidden"
-          style={{
-            background: p.bg,
-            minHeight: "100vh",
-          }}
-        >
-          <div className="mx-auto max-w-4xl w-full flex flex-col md:flex-row items-center gap-12 md:gap-20">
-            {/* Visual */}
-            <div className="flex-shrink-0 flex items-center justify-center w-[200px] h-[200px]">
-              <p.Visual />
-            </div>
-
-            {/* Text */}
-            <div>
-              <span
-                className="text-xs uppercase tracking-[0.3em] font-medium"
-                style={{ color: T.champagne, fontFamily: T.mono }}
-              >
-                Fase {p.num}
-              </span>
-              <h3
-                className="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight"
-                style={{
-                  fontFamily: T.heading,
-                  letterSpacing: "-0.02em",
-                  color: T.ivory,
-                }}
-              >
-                {p.title}
-              </h3>
-              <p
-                className="mt-5 max-w-md text-base leading-relaxed"
-                style={{ color: `${T.ivory}99` }}
-              >
-                {p.desc}
-              </p>
-            </div>
-          </div>
-
-          {/* Large watermark number */}
-          <span
-            className="absolute bottom-6 right-8 text-[12rem] font-bold leading-none select-none pointer-events-none"
-            style={{
-              fontFamily: T.heading,
-              color: `${T.ivory}06`,
-              letterSpacing: "-0.04em",
-            }}
-          >
-            {p.num}
-          </span>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════════ */
-/*  SECTION 5 — PRICING                                                  */
-/* ══════════════════════════════════════════════════════════════════════ */
-function Pricing() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from("[data-pricing-card]", {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
-  const plans = [
-    {
-      name: "Esencial",
-      price: "Desde $2.500 USD",
-      desc: "Diagnóstico inicial + Roadmap AI",
-      features: [
-        "Auditoría de procesos actuales",
-        "Identificación de oportunidades AI",
-        "Roadmap de transformación",
-        "Reporte ejecutivo",
-      ],
-      featured: false,
-    },
-    {
-      name: "Avanzado",
-      price: "Desde $7.500 USD",
-      desc: "Implementación guiada + Prototipos",
-      features: [
-        "Todo lo de Esencial",
-        "Prototipo funcional (MVP)",
-        "Integración con sistemas existentes",
-        "Capacitación del equipo",
-        "Soporte por 30 días",
-      ],
-      featured: true,
-    },
-    {
-      name: "Enterprise",
-      price: "Personalizado",
-      desc: "Transformación integral + Soporte",
-      features: [
-        "Todo lo de Avanzado",
-        "Múltiples líneas de negocio",
-        "Arquitectura AI a medida",
-        "Soporte dedicado continuo",
-        "SLA garantizado",
-      ],
-      featured: false,
     },
   ];
 
   return (
     <section
-      id="pricing"
-      ref={sectionRef}
-      className="relative py-28 px-6 sm:px-12"
-      style={{ background: T.ivory }}
+      id="protocol"
+      ref={containerRef}
+      className="py-24 px-4 md:px-8 max-w-6xl mx-auto relative"
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 text-center">
-          <p
-            className="text-xs uppercase tracking-[0.3em] mb-3"
-            style={{ color: T.champagne, fontFamily: T.mono }}
+      <div className="mb-24 text-center">
+        <h2
+          className="font-bold text-4xl md:text-6xl"
+          style={{ fontFamily: T.heading, color: T.slate }}
+        >
+          Nuestro{" "}
+          <span
+            className="italic font-normal"
+            style={{ fontFamily: T.drama, color: T.champagne }}
           >
-            Planes
-          </p>
-          <h2
-            className="text-[clamp(2rem,4vw,3rem)] font-bold"
+            Protocolo
+          </span>
+        </h2>
+      </div>
+
+      <div className="relative">
+        {steps.map((step, i) => (
+          <div
+            key={i}
+            className="protocol-card h-[70vh] w-full rounded-[3rem] shadow-xl p-8 md:p-16 flex flex-col md:flex-row items-center justify-between mb-8 origin-top"
             style={{
-              fontFamily: T.heading,
-              letterSpacing: "-0.02em",
-              color: T.slate,
+              background: T.obsidian,
+              border: `1px solid ${T.champagne}15`,
+              zIndex: i,
             }}
           >
-            Inversión a la medida de tu{" "}
-            <span style={{ fontFamily: T.drama, fontStyle: "italic", color: T.champagne }}>
-              ambición
-            </span>
-          </h2>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-3 items-stretch">
-          {plans.map((plan, i) => (
-            <div
-              key={i}
-              data-pricing-card
-              className="relative flex flex-col rounded-[2rem] p-8 border transition-transform duration-300 hover:-translate-y-1"
-              style={{
-                background: plan.featured ? T.obsidian : "white",
-                borderColor: plan.featured ? T.champagne : `${T.slate}15`,
-                boxShadow: plan.featured
-                  ? `0 12px 48px ${T.champagne}20`
-                  : "0 4px 24px rgba(0,0,0,0.04)",
-              }}
-            >
-              {plan.featured && (
-                <span
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-[10px] uppercase tracking-[0.2em] font-semibold"
-                  style={{
-                    background: T.champagne,
-                    color: T.obsidian,
-                    fontFamily: T.mono,
-                  }}
-                >
-                  Popular
-                </span>
-              )}
-
-              <h3
-                className="text-lg font-bold"
-                style={{
-                  fontFamily: T.heading,
-                  letterSpacing: "-0.02em",
-                  color: plan.featured ? T.ivory : T.slate,
-                }}
+            <div className="flex-1">
+              <span
+                className="text-xl md:text-2xl mb-6 block"
+                style={{ color: T.champagne, fontFamily: T.mono }}
               >
-                {plan.name}
+                [{step.num}]
+              </span>
+              <h3
+                className="font-bold text-3xl md:text-5xl mb-6"
+                style={{ fontFamily: T.heading, color: T.ivory }}
+              >
+                {step.title}
               </h3>
               <p
-                className="mt-1 text-sm"
-                style={{ color: plan.featured ? `${T.ivory}88` : `${T.slate}77` }}
+                className="text-lg md:text-xl max-w-md leading-relaxed"
+                style={{ color: `${T.ivory}99` }}
               >
-                {plan.desc}
+                {step.desc}
               </p>
-
-              <p
-                className="mt-6 text-2xl font-bold"
-                style={{
-                  fontFamily: T.heading,
-                  letterSpacing: "-0.02em",
-                  color: plan.featured ? T.champagne : T.slate,
-                }}
-              >
-                {plan.price}
-              </p>
-
-              <ul className="mt-6 flex-1 space-y-3">
-                {plan.features.map((f, j) => (
-                  <li key={j} className="flex items-start gap-2 text-sm">
-                    <Check
-                      size={15}
-                      className="mt-0.5 flex-shrink-0"
-                      style={{
-                        color: plan.featured ? T.champagne : `${T.slate}88`,
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: plan.featured ? `${T.ivory}cc` : `${T.slate}bb`,
-                      }}
-                    >
-                      {f}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <a
-                href="#"
-                className="magnetic-btn mt-8 flex items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-all duration-300"
-                style={{
-                  background: plan.featured ? T.champagne : "transparent",
-                  color: plan.featured ? T.obsidian : T.slate,
-                  border: plan.featured ? "none" : `1.5px solid ${T.slate}30`,
-                  fontFamily: T.heading,
-                }}
-              >
-                {plan.name === "Enterprise" ? "Contactar" : "Agenda una Reunión"}
-                <ArrowRight size={14} />
-              </a>
             </div>
-          ))}
-        </div>
+            <div className="flex-1 flex justify-center items-center mt-12 md:mt-0">
+              <div
+                className="w-48 h-48 rounded-full flex items-center justify-center shadow-inner relative overflow-hidden"
+                style={{ background: T.slate }}
+              >
+                <step.Visual />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-/*  SECTION 6 — FOOTER                                                   */
+/*  FOOTER                                                               */
 /* ══════════════════════════════════════════════════════════════════════ */
-function Footer() {
+function MidnightFooter() {
   return (
     <footer
-      className="relative rounded-t-[4rem] px-6 py-20 sm:px-12"
-      style={{ background: T.obsidian }}
+      className="pt-24 pb-12 px-6 md:px-12 rounded-t-[4rem] mt-24"
+      style={{ background: T.obsidian, color: T.ivory }}
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 md:grid-cols-3">
-          {/* Col 1 — Brand */}
-          <div>
-            <h4
-              className="text-2xl font-bold"
-              style={{
-                fontFamily: T.heading,
-                letterSpacing: "-0.02em",
-                color: T.ivory,
-              }}
-            >
-              New Era
-            </h4>
-            <p
-              className="mt-3 text-sm leading-relaxed max-w-xs"
-              style={{ color: `${T.ivory}77` }}
-            >
-              Consultoría de tecnología y transformación digital con AI.
-              Precisión artesanal para tu empresa.
-            </p>
-
-            {/* Operational status */}
-            <div
-              className="mt-6 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] uppercase tracking-[0.15em] font-medium"
-              style={{
-                border: `1px solid ${T.ivory}15`,
-                color: `${T.ivory}88`,
-                fontFamily: T.mono,
-              }}
-            >
-              <span
-                className="block h-2 w-2 rounded-full animate-pulse"
-                style={{ background: "#34D399" }}
-              />
-              Sistema Operacional
-            </div>
-          </div>
-
-          {/* Col 2 — Navigation */}
-          <div>
-            <h5
-              className="text-xs uppercase tracking-[0.2em] font-semibold mb-5"
-              style={{ color: `${T.ivory}55`, fontFamily: T.mono }}
-            >
-              Navegación
-            </h5>
-            <ul className="space-y-3">
-              {[
-                { label: "Capacidades", href: "#features" },
-                { label: "Protocolo", href: "#protocol" },
-                { label: "Planes", href: "#pricing" },
-                { label: "Agenda una Reunión", href: "#" },
-              ].map((link, i) => (
-                <li key={i}>
-                  <a
-                    href={link.href}
-                    className="link-lift inline-flex items-center gap-1 text-sm transition-colors duration-200 hover:opacity-100"
-                    style={{ color: `${T.ivory}88` }}
-                  >
-                    {link.label}
-                    <ExternalLink size={11} className="opacity-40" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3 — Legal */}
-          <div>
-            <h5
-              className="text-xs uppercase tracking-[0.2em] font-semibold mb-5"
-              style={{ color: `${T.ivory}55`, fontFamily: T.mono }}
-            >
-              Legal
-            </h5>
-            <ul className="space-y-3">
-              {["Términos de Servicio", "Política de Privacidad", "Aviso Legal"].map(
-                (item, i) => (
-                  <li key={i}>
-                    <a
-                      href="#"
-                      className="link-lift inline-block text-sm transition-colors duration-200 hover:opacity-100"
-                      style={{ color: `${T.ivory}55` }}
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
+        <div className="lg:col-span-2">
+          <h2
+            className="font-bold text-3xl mb-4"
+            style={{ fontFamily: T.heading }}
+          >
+            New Era
+          </h2>
+          <p
+            className="max-w-sm"
+            style={{ color: `${T.ivory}99` }}
+          >
+            Diseñamos e implementamos soluciones de Inteligencia Artificial a
+            medida en tu empresa.
+          </p>
         </div>
 
-        {/* Bottom bar */}
+        <div>
+          <h4
+            className="text-xs uppercase tracking-widest mb-6"
+            style={{ color: T.champagne, fontFamily: T.mono }}
+          >
+            Navegación
+          </h4>
+          <ul className="space-y-4 font-medium text-sm">
+            <li>
+              <a
+                href="#features"
+                className="link-lift transition-colors"
+                style={{ color: `${T.ivory}cc` }}
+              >
+                Soluciones
+              </a>
+            </li>
+            <li>
+              <a
+                href="#philosophy"
+                className="link-lift transition-colors"
+                style={{ color: `${T.ivory}cc` }}
+              >
+                Filosofía
+              </a>
+            </li>
+            <li>
+              <a
+                href="#protocol"
+                className="link-lift transition-colors"
+                style={{ color: `${T.ivory}cc` }}
+              >
+                Protocolo
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4
+            className="text-xs uppercase tracking-widest mb-6"
+            style={{ color: T.champagne, fontFamily: T.mono }}
+          >
+            Contacto
+          </h4>
+          <ul className="space-y-4 font-medium text-sm">
+            <li>
+              <a
+                href="#"
+                className="link-lift transition-colors"
+                style={{ color: `${T.ivory}cc` }}
+              >
+                Agendar Reunión
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="link-lift transition-colors"
+                style={{ color: `${T.ivory}cc` }}
+              >
+                Hablar con Agente AI
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row items-center justify-between gap-6"
+        style={{ borderTop: `1px solid ${T.ivory}15` }}
+      >
         <div
-          className="mt-16 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs"
-          style={{
-            borderTop: `1px solid ${T.ivory}10`,
-            color: `${T.ivory}44`,
-            fontFamily: T.mono,
-          }}
+          className="flex items-center gap-3 px-4 py-2 rounded-full"
+          style={{ border: `1px solid ${T.ivory}15`, background: `${T.ivory}08` }}
         >
-          <span>&copy; {new Date().getFullYear()} New Era. Todos los derechos reservados.</span>
-          <span className="flex items-center gap-1.5">
-            Hecho con
-            <span style={{ color: T.champagne }}>&#9830;</span>
-            precisión
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span
+            className="text-xs uppercase tracking-wider"
+            style={{ color: `${T.ivory}aa`, fontFamily: T.mono }}
+          >
+            System Operational
           </span>
+        </div>
+        <div
+          className="text-xs"
+          style={{ color: `${T.ivory}44`, fontFamily: T.mono }}
+        >
+          &copy; {new Date().getFullYear()} New Era Consultora AI. All rights
+          reserved.
         </div>
       </div>
     </footer>
@@ -1252,7 +895,6 @@ function Footer() {
 /* ══════════════════════════════════════════════════════════════════════ */
 export default function Design2() {
   useEffect(() => {
-    /* Refresh ScrollTrigger after all content is painted */
     const timeout = setTimeout(() => ScrollTrigger.refresh(), 200);
     return () => {
       clearTimeout(timeout);
@@ -1261,13 +903,62 @@ export default function Design2() {
   }, []);
 
   return (
-    <div className="noise-overlay" style={{ background: "white" }}>
-      <Hero />
-      <Features />
-      <Philosophy />
-      <Protocol />
-      <Pricing />
-      <Footer />
-    </div>
+    <>
+      <style>{`
+        .midnight-luxe-page {
+          --font-sans: 'Inter', sans-serif;
+          --font-heading: 'Inter', sans-serif;
+          --font-drama: 'Playfair Display', serif;
+          --font-mono: 'JetBrains Mono', monospace;
+          background-color: ${T.ivory};
+          color: ${T.slate};
+        }
+        .midnight-luxe-page .font-sans { font-family: var(--font-sans); }
+        .midnight-luxe-page .font-heading { font-family: var(--font-heading); }
+        .midnight-luxe-page .font-drama { font-family: var(--font-drama); }
+        .midnight-luxe-page .font-mono { font-family: var(--font-mono); }
+
+        .midnight-luxe-page .noise-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          pointer-events: none;
+          z-index: 9999;
+          opacity: 0.03;
+          background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        .midnight-luxe-page .btn-magnetic {
+          transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .midnight-luxe-page .btn-magnetic:hover {
+          transform: scale(1.03);
+        }
+
+        .midnight-luxe-page .link-lift {
+          transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .midnight-luxe-page .link-lift:hover {
+          transform: translateY(-1px);
+          color: ${T.champagne} !important;
+        }
+
+        /* Scrollbar */
+        .midnight-luxe-page ::-webkit-scrollbar { width: 8px; }
+        .midnight-luxe-page ::-webkit-scrollbar-track { background: ${T.ivory}; }
+        .midnight-luxe-page ::-webkit-scrollbar-thumb { background: ${T.slate}; border-radius: 4px; }
+      `}</style>
+
+      <div className="midnight-luxe-page relative w-full min-h-screen -mt-14">
+        <div className="noise-overlay" />
+        <Hero />
+        <Features />
+        <Philosophy />
+        <Protocol />
+        <MidnightFooter />
+      </div>
+    </>
   );
 }
