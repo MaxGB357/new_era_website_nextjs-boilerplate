@@ -427,7 +427,7 @@ const Protocol = () => {
           pinSpacing: false,
           animation: gsap.to(card, {
             scale: 0.9 - i * 0.05,
-            opacity: 0.5,
+            opacity: 0,
             filter: "blur(10px)",
             ease: "none",
           }),
