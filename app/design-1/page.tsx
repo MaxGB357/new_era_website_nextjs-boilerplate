@@ -636,7 +636,7 @@ export default function OrganicTechPage() {
         .organic-tech-page ::-webkit-scrollbar-thumb { background: #2E4036; border-radius: 4px; }
       `}</style>
 
-      <div className="organic-tech-page relative w-full min-h-screen -mt-14">
+      <div className="organic-tech-page relative w-full min-h-screen">
         <div className="noise-overlay"></div>
         <Hero />
         <Features />

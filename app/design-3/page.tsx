@@ -794,7 +794,7 @@ export default function BrutalistSignalPage() {
         .brutalist-page ::-webkit-scrollbar-thumb { background: ${BLACK}; border-radius: 0; }
       `}</style>
 
-      <div className="brutalist-page relative w-full min-h-screen -mt-14">
+      <div className="brutalist-page relative w-full min-h-screen">
         <div className="noise-overlay"></div>
         <Hero />
         <Features />

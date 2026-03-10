@@ -48,7 +48,7 @@ export default function Spline3DPage() {
         .spline-page canvas { display: block; }
       `}</style>
 
-      <div className="spline-page -mt-14">
+      <div className="spline-page">
         {/* Hero — full viewport */}
         <section className="relative w-full" style={{ height: "100dvh" }}>
           {/* Fallback background — always rendered underneath */}

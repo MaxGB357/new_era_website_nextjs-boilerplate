@@ -951,7 +951,7 @@ export default function Design2() {
         .midnight-luxe-page ::-webkit-scrollbar-thumb { background: ${T.slate}; border-radius: 4px; }
       `}</style>
 
-      <div className="midnight-luxe-page relative w-full min-h-screen -mt-14">
+      <div className="midnight-luxe-page relative w-full min-h-screen">
         <div className="noise-overlay" />
         <Hero />
         <Features />

@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Era — Consultoría de Inteligencia Artificial para la Transformación Digital</title>
+  <meta name="description" content="New Era transforma empresas con inteligencia artificial. Diagnóstico, implementación y optimización de soluciones IA para acelerar tu crecimiento.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--font-size-body);
+      line-height: var(--line-height);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow-x: hidden;
+    }
+    img, svg { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; }
+    ul { list-style: none; }
+
+    /* === CUSTOM PROPERTIES — Dark / Premium === */
+    :root {
+      --color-bg: #0a0a0f;
+      --color-bg-alt: #111118;
+      --color-text: #e4e4e7;
+      --color-text-muted: #71717a;
+      --color-accent: #818cf8;
+      --color-accent-hover: #6366f1;
+      --color-accent-light: rgba(129, 140, 248, 0.1);
+      --color-border: rgba(255, 255, 255, 0.08);
+      --color-card-bg: rgba(255, 255, 255, 0.03);
+      --gradient-accent: linear-gradient(135deg, #818cf8, #c084fc);
+      --gradient-glow: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(129, 140, 248, 0.06), transparent 40%);
+
+      --font-heading: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-size-hero: clamp(2.5rem, 6vw, 4.5rem);
+      --font-size-h2: clamp(1.75rem, 3.5vw, 2.75rem);
+      --font-size-h3: clamp(1.25rem, 2vw, 1.5rem);
+      --font-size-body: 1rem;
+      --font-size-small: 0.875rem;
+      --line-height: 1.6;
+
+      --section-padding: clamp(4rem, 8vw, 7rem) clamp(1rem, 5vw, 4rem);
+      --container-max: 1200px;
+      --gap-sm: 0.5rem;
+      --gap-md: 1rem;
+      --gap-lg: 2rem;
+      --gap-xl: 3rem;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 30px rgba(129, 140, 248, 0.15);
+
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* === UTILITIES === */
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 5vw, 4rem);
+    }
+    section {
+      padding: var(--section-padding);
+    }
+    .section-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto var(--gap-xl);
+    }
+    .section-label {
+      font-size: var(--font-size-small);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      font-weight: 600;
+      display: block;
+      margin-bottom: var(--gap-sm);
+    }
+    .section-header h2 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h2);
+      font-weight: 700;
+      margin-bottom: var(--gap-md);
+    }
+    .section-header p {
+      color: var(--color-text-muted);
+    }
+
+    /* === GLASSMORPHISM === */
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+    }
+
+    /* === BUTTONS === */
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: #fff;
+      padding: 0.875rem 2rem;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: var(--font-size-body);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-text);
+      padding: 0.875rem 2rem;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-secondary:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    /* === CARDS === */
+    .card {
+      background: var(--color-card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--gap-lg);
+      transition: var(--transition);
+    }
+    .card:hover {
+      border-color: rgba(129, 140, 248, 0.3);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-4px);
+    }
+
+    /* === ANIMATIONS === */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .animate-slide-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-slide-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .animate-slide-right {
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-slide-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.2s; }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.3s; }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.4s; }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.5s; }
+    .stagger-children.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero load animations */
+    .hero-fade {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: heroFadeIn 0.8s ease forwards;
+    }
+    .hero-fade:nth-child(1) { animation-delay: 0s; }
+    .hero-fade:nth-child(2) { animation-delay: 0.1s; }
+    .hero-fade:nth-child(3) { animation-delay: 0.2s; }
+    .hero-fade:nth-child(4) { animation-delay: 0.3s; }
+    .hero-fade:nth-child(5) { animation-delay: 0.4s; }
+    @keyframes heroFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === NAVBAR === */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .nav-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 5vw, 4rem);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: none;
+      gap: 2rem;
+    }
+    .nav-links a {
+      font-weight: 500;
+      font-size: var(--font-size-small);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      transition: var(--transition);
+    }
+    .nav-links a:hover {
+      color: var(--color-accent);
+    }
+    .nav-cta {
+      display: none;
+    }
+    .nav-cta .btn-primary {
+      padding: 0.625rem 1.5rem;
+      font-size: var(--font-size-small);
+    }
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+      z-index: 1001;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--color-text);
+      transition: var(--transition);
+      border-radius: 2px;
+    }
+    .nav-hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .nav-hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    .nav-mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(10, 10, 15, 0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 999;
+    }
+    .nav-mobile-menu.open {
+      transform: translateX(0);
+    }
+    .nav-mobile-menu a {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      transition: var(--transition);
+    }
+    .nav-mobile-menu a:hover {
+      color: var(--color-accent);
+    }
+
+    @media (min-width: 1024px) {
+      nav { height: 72px; }
+      .nav-links { display: flex; }
+      .nav-cta { display: block; }
+      .nav-hamburger { display: none; }
+      .nav-mobile-menu { display: none; }
+    }
+
+    /* === HERO === */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(192, 132, 252, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-small);
+      font-weight: 600;
+      width: fit-content;
+    }
+    .hero-content h1 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-hero);
+      font-weight: 800;
+      line-height: 1.1;
+      max-width: 700px;
+      margin-bottom: var(--gap-md);
+    }
+    .hero-content h1 span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--color-text-muted);
+      max-width: 540px;
+      margin-bottom: var(--gap-lg);
+    }
+    .hero-ctas {
+      display: flex;
+      gap: var(--gap-md);
+      flex-wrap: wrap;
+      margin-bottom: var(--gap-lg);
+    }
+    .hero-social-proof-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+    }
+    .hero-avatars {
+      display: flex;
+    }
+    .hero-avatars span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 2px solid var(--color-bg);
+      margin-left: -8px;
+    }
+    .hero-avatars span:first-child { margin-left: 0; }
+    .hero-avatars span:nth-child(1) { background: #818cf8; color: #fff; }
+    .hero-avatars span:nth-child(2) { background: #c084fc; color: #fff; }
+    .hero-avatars span:nth-child(3) { background: #f472b6; color: #fff; }
+    .hero-avatars span:nth-child(4) { background: #34d399; color: #fff; }
+    .hero-visual {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      #hero { padding-top: 72px; }
+      .hero-grid { grid-template-columns: 55% 45%; }
+      .hero-visual {
+        display: block;
+        aspect-ratio: 4/3;
+        background: linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(192, 132, 252, 0.1));
+        border-radius: 24px;
+        border: 1px solid var(--color-border);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-visual::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 30% 40%, rgba(129, 140, 248, 0.2) 0%, transparent 50%),
+          radial-gradient(circle at 70% 60%, rgba(192, 132, 252, 0.15) 0%, transparent 50%);
+      }
+      .hero-visual-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .hero-visual-text {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        font-family: var(--font-mono);
+        font-size: var(--font-size-small);
+        color: var(--color-accent);
+        opacity: 0.6;
+      }
+    }
+
+    /* === SOCIAL PROOF === */
+    .social-proof {
+      padding: 3rem clamp(1rem, 5vw, 4rem);
+      background: var(--color-bg-alt);
+    }
+    .social-proof-label {
+      text-align: center;
+      font-size: var(--font-size-small);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--gap-lg);
+    }
+    .logo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem 3rem;
+      align-items: center;
+    }
+    .logo-item {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--color-text);
+      opacity: 0.3;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .logo-item:hover {
+      opacity: 0.6;
+    }
+
+    /* === VALUE PROPOSITION === */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+    }
+    .benefit-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-accent-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: var(--gap-md);
+    }
+    .benefit-card h3 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h3);
+      font-weight: 600;
+      margin-bottom: var(--gap-sm);
+    }
+    .benefit-card p {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+    }
+
+    @media (min-width: 640px) {
+      .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .benefits-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === FEATURES === */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;
+    }
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+    .feature-tag {
+      font-size: var(--font-size-small);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      font-weight: 600;
+      display: block;
+      margin-bottom: var(--gap-sm);
+    }
+    .feature-content h3 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h2);
+      font-weight: 700;
+      margin-bottom: var(--gap-md);
+    }
+    .feature-content p {
+      color: var(--color-text-muted);
+      margin-bottom: var(--gap-lg);
+    }
+    .feature-bullets li {
+      padding: 0.375rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-text);
+    }
+    .feature-bullets li::before {
+      content: '✓';
+      color: var(--color-accent);
+      font-weight: 700;
+    }
+    .feature-visual {
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), rgba(192, 132, 252, 0.08));
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    @media (min-width: 1024px) {
+      .feature-row { grid-template-columns: 1fr 1fr; }
+      .feature-row:nth-child(even) .feature-content { order: 2; }
+      .feature-row:nth-child(even) .feature-visual { order: 1; }
+    }
+
+    /* === HOW IT WORKS === */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+      position: relative;
+    }
+    .step-card {
+      text-align: center;
+      padding: var(--gap-lg);
+    }
+    .step-number {
+      font-size: 4rem;
+      font-weight: 800;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: var(--gap-md);
+      display: block;
+    }
+    .step-card h3 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h3);
+      font-weight: 600;
+      margin-bottom: var(--gap-sm);
+    }
+    .step-card p {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+    }
+    .step-connector {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .steps-grid { grid-template-columns: repeat(3, 1fr); gap: var(--gap-xl); }
+      .step-connector {
+        display: block;
+        position: absolute;
+        top: 3.5rem;
+        height: 2px;
+        border-top: 2px dashed var(--color-border);
+      }
+      .step-connector:nth-of-type(1) { left: 25%; right: 55%; }
+      .step-connector:nth-of-type(2) { left: 55%; right: 25%; }
+    }
+
+    /* === TESTIMONIALS === */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+    }
+    .testimonial-card {
+      padding: var(--gap-lg);
+    }
+    .testimonial-stars {
+      color: #f59e0b;
+      font-size: 1rem;
+      margin-bottom: var(--gap-md);
+      display: block;
+    }
+    .testimonial-card blockquote {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      margin-bottom: var(--gap-lg);
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .author-info strong {
+      display: block;
+      font-size: var(--font-size-small);
+    }
+    .author-info span {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+    }
+
+    @media (min-width: 640px) {
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === CASE STUDIES === */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+    }
+    .result-card {
+      padding: 2.5rem;
+      border-radius: 20px;
+    }
+    .result-logo {
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-bottom: var(--gap-lg);
+      color: var(--color-text);
+    }
+    .result-metrics {
+      display: flex;
+      gap: var(--gap-xl);
+      margin-bottom: var(--gap-lg);
+      flex-wrap: wrap;
+    }
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      line-height: 1.2;
+    }
+    .metric-label {
+      font-size: var(--font-size-small);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .result-quote {
+      font-style: italic;
+      border-left: 3px solid var(--color-accent);
+      padding-left: var(--gap-md);
+      color: var(--color-text-muted);
+      margin-bottom: var(--gap-md);
+    }
+    .result-link {
+      color: var(--color-accent);
+      font-weight: 600;
+      font-size: var(--font-size-small);
+      transition: var(--transition);
+    }
+    .result-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (min-width: 1024px) {
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* === ABOUT === */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+    .about-content p {
+      color: var(--color-text-muted);
+      margin-bottom: var(--gap-md);
+    }
+    .about-content h2 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h2);
+      font-weight: 700;
+      margin-bottom: var(--gap-lg);
+    }
+    .about-stats {
+      display: flex;
+      gap: var(--gap-xl);
+      margin-top: var(--gap-lg);
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+    .stat-label {
+      font-size: var(--font-size-small);
+      color: var(--color-text-muted);
+    }
+    .about-visual {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(129, 140, 248, 0.12), rgba(192, 132, 252, 0.08));
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-visual::before {
+      content: '⟐';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 6rem;
+      opacity: 0.1;
+    }
+
+    @media (min-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    }
+
+    /* === PORTFOLIO === */
+    .portfolio-filters {
+      display: flex;
+      justify-content: center;
+      gap: var(--gap-sm);
+      margin-bottom: var(--gap-xl);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      border-color: rgba(129, 140, 248, 0.3);
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+    }
+    .portfolio-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .portfolio-image {
+      aspect-ratio: 4/3;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+    }
+    .portfolio-image:nth-child(1) { background: linear-gradient(135deg, #818cf8, #c084fc); }
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 15, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: var(--transition);
+      border-radius: var(--radius);
+    }
+    .portfolio-item:hover .portfolio-overlay {
+      opacity: 1;
+    }
+    .portfolio-overlay h3 {
+      font-size: var(--font-size-h3);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .portfolio-overlay span {
+      color: var(--color-accent);
+      font-size: var(--font-size-small);
+    }
+
+    @media (min-width: 640px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === CTA FINAL === */
+    #cta-final {
+      background: var(--gradient-accent);
+      padding: 6rem clamp(1rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta-final::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 70%);
+    }
+    #cta-final .container { position: relative; z-index: 1; }
+    #cta-final h2 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-hero);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: var(--gap-md);
+    }
+    #cta-final p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.125rem;
+      max-width: 540px;
+      margin: 0 auto var(--gap-lg);
+    }
+    .cta-btn-inverted {
+      background: #fff;
+      color: #6366f1;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 1.0625rem;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .cta-btn-inverted:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .cta-note {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: var(--font-size-small);
+      margin-top: var(--gap-md);
+    }
+
+    /* === TEAM === */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap-lg);
+    }
+    .team-member {
+      text-align: center;
+      padding: var(--gap-lg);
+    }
+    .member-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto var(--gap-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .member-photo:nth-child(1) { background: linear-gradient(135deg, #818cf8, #6366f1); }
+    .team-member:nth-child(1) .member-photo { background: linear-gradient(135deg, #818cf8, #6366f1); }
+    .team-member:nth-child(2) .member-photo { background: linear-gradient(135deg, #c084fc, #a855f7); }
+    .team-member:nth-child(3) .member-photo { background: linear-gradient(135deg, #f472b6, #ec4899); }
+    .team-member:nth-child(4) .member-photo { background: linear-gradient(135deg, #34d399, #10b981); }
+    .team-member h3 {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .team-member p {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+    }
+    .member-social {
+      display: flex;
+      justify-content: center;
+      gap: var(--gap-sm);
+      margin-top: var(--gap-sm);
+    }
+    .member-social a {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+      transition: var(--transition);
+    }
+    .member-social a:hover { color: var(--color-accent); }
+
+    @media (min-width: 1024px) {
+      .team-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* === BLOG PREVIEW === */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-lg);
+    }
+    .blog-card {
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+    .blog-image {
+      width: 100%;
+      height: 200px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .blog-card:nth-child(1) .blog-image { background: linear-gradient(135deg, #818cf8, #6366f1); }
+    .blog-card:nth-child(2) .blog-image { background: linear-gradient(135deg, #c084fc, #a855f7); }
+    .blog-card:nth-child(3) .blog-image { background: linear-gradient(135deg, #f472b6, #818cf8); }
+    .blog-content {
+      padding: 1.5rem;
+    }
+    .blog-category {
+      display: inline-block;
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--gap-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .blog-content h3 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h3);
+      font-weight: 600;
+      margin-bottom: var(--gap-sm);
+    }
+    .blog-content p {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+      margin-bottom: var(--gap-md);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .blog-meta {
+      display: flex;
+      gap: var(--gap-md);
+      font-size: var(--font-size-small);
+      color: var(--color-text-muted);
+    }
+
+    @media (min-width: 1024px) {
+      .blog-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === CAREERS === */
+    .careers-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .career-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      gap: var(--gap-md);
+      flex-wrap: wrap;
+    }
+    .career-info h3 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .career-tags {
+      display: flex;
+      gap: var(--gap-sm);
+      flex-wrap: wrap;
+    }
+    .career-tag {
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* === MAP / LOCATION === */
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+    .location-info h2 {
+      font-family: var(--font-heading);
+      font-size: var(--font-size-h2);
+      font-weight: 700;
+      margin-bottom: var(--gap-lg);
+    }
+    .location-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: var(--gap-md);
+    }
+    .location-detail .icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .location-detail p {
+      color: var(--color-text-muted);
+    }
+    .location-map {
+      aspect-ratio: 4/3;
+      background: var(--color-bg-alt);
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      font-size: 1.125rem;
+    }
+
+    @media (min-width: 1024px) {
+      .location-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    }
+
+    /* === FOOTER === */
+    footer {
+      background: var(--color-bg-alt);
+      padding: 4rem clamp(1rem, 5vw, 4rem) 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap-xl);
+      margin-bottom: 3rem;
+    }
+    .footer-logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: var(--gap-sm);
+      display: inline-block;
+    }
+    .footer-brand p {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-small);
+      margin-bottom: var(--gap-md);
+      max-width: 300px;
+    }
+    .footer-social {
+      display: flex;
+      gap: var(--gap-md);
+    }
+    .footer-social a {
+      color: var(--color-text-muted);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+    }
+    .footer-social a:hover {
+      color: var(--color-accent);
+      border-color: rgba(129, 140, 248, 0.3);
+    }
+    .footer-column h4 {
+      font-size: var(--font-size-small);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--gap-md);
+      color: var(--color-text);
+      font-weight: 600;
+    }
+    .footer-column a {
+      display: block;
+      font-size: var(--font-size-small);
+      color: var(--color-text-muted);
+      padding: 0.375rem 0;
+      transition: var(--transition);
+    }
+    .footer-column a:hover {
+      color: var(--color-accent);
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--color-border);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--gap-sm);
+    }
+    .footer-bottom p {
+      font-size: var(--font-size-small);
+      color: var(--color-text-muted);
+    }
+
+    @media (min-width: 1024px) {
+      .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+    }
+
+    /* === SKIP LINK === */
+    .skip-link {
+      position: fixed;
+      top: -100%;
+      left: 1rem;
+      background: var(--color-accent);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      z-index: 10000;
+      font-weight: 600;
+      transition: top 0.3s;
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* === BG ALTERNATION === */
+    #benefits { background: var(--color-bg); }
+    #features { background: var(--color-bg-alt); }
+    #how-it-works { background: var(--color-bg); }
+    #testimonials { background: var(--color-bg-alt); }
+    #results { background: var(--color-bg); }
+    #about { background: var(--color-bg-alt); }
+    #portfolio { background: var(--color-bg); }
+    #team { background: var(--color-bg-alt); }
+    #blog { background: var(--color-bg); }
+    #careers { background: var(--color-bg-alt); }
+    #location { background: var(--color-bg); }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Saltar al contenido</a>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav aria-label="Navegación principal">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">New Era</a>
+      <div class="nav-links">
+        <a href="#hero">Inicio</a>
+        <a href="#benefits">Beneficios</a>
+        <a href="#features">Servicios</a>
+        <a href="#how-it-works">Proceso</a>
+        <a href="#portfolio">Portafolio</a>
+        <a href="#testimonials">Testimonios</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#cta-final" class="btn-primary">Agendar Demo</a>
+      </div>
+      <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" type="button">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-mobile-menu">
+    <a href="#hero">Inicio</a>
+    <a href="#benefits">Beneficios</a>
+    <a href="#features">Servicios</a>
+    <a href="#how-it-works">Proceso</a>
+    <a href="#portfolio">Portafolio</a>
+    <a href="#testimonials">Testimonios</a>
+    <a href="#cta-final" class="btn-primary">Agendar Demo</a>
+  </div>
+
+  <main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" aria-labelledby="hero-heading">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge hero-fade">
+            <span>⚡</span> Consultoría IA de nueva generación
+          </div>
+          <h1 id="hero-heading" class="hero-fade">La inteligencia artificial es la <span>evolución</span> de tu negocio</h1>
+          <p class="hero-subtitle hero-fade">Transformamos empresas con soluciones de IA estratégicas. Diagnóstico, implementación y optimización para acelerar tu crecimiento digital.</p>
+          <div class="hero-ctas hero-fade">
+            <a href="#cta-final" class="btn-primary">Agendar una demo →</a>
+            <a href="#how-it-works" class="btn-secondary">Ver cómo funciona</a>
+          </div>
+          <div class="hero-social-proof-mini hero-fade">
+            <div class="hero-avatars">
+              <span>MG</span>
+              <span>AL</span>
+              <span>CR</span>
+              <span>+</span>
+            </div>
+            <span>Más de 80 empresas ya transformaron sus operaciones</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-visual-grid"></div>
+          <span class="hero-visual-text">// neural_network.init()</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOCIAL PROOF ============ -->
+  <section class="social-proof animate-on-scroll" aria-label="Empresas que confían en nosotros">
+    <div class="container">
+      <p class="social-proof-label">Empresas que confían en nuestra metodología</p>
+      <div class="logo-grid">
+        <span class="logo-item">Globex Corp</span>
+        <span class="logo-item">Initech</span>
+        <span class="logo-item">NovaTech</span>
+        <span class="logo-item">DataPrime</span>
+        <span class="logo-item">SynergyAI</span>
+        <span class="logo-item">Vertex Labs</span>
+        <span class="logo-item">OmniFlow</span>
+        <span class="logo-item">Quantum Inc</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUE PROPOSITION ============ -->
+  <section id="benefits" aria-labelledby="benefits-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">¿Por qué New Era?</span>
+        <h2 id="benefits-heading">Inteligencia artificial con propósito empresarial</h2>
+        <p>No vendemos tecnología por moda. Implementamos IA donde realmente genera impacto medible en tu operación.</p>
+      </div>
+      <div class="benefits-grid stagger-children">
+        <div class="card benefit-card">
+          <div class="benefit-icon">🎯</div>
+          <h3>Diagnóstico estratégico</h3>
+          <p>Mapeamos tus procesos para identificar exactamente dónde la IA multiplica tu productividad y reduce costos.</p>
+        </div>
+        <div class="card benefit-card">
+          <div class="benefit-icon">⚡</div>
+          <h3>Implementación ágil</h3>
+          <p>De concepto a producción en semanas, no meses. Soluciones que se integran con tu stack tecnológico actual.</p>
+        </div>
+        <div class="card benefit-card">
+          <div class="benefit-icon">📈</div>
+          <h3>ROI comprobado</h3>
+          <p>Promedio de 3.5x retorno de inversión en el primer trimestre. Métricas reales, no promesas vacías.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES / SERVICIOS ============ -->
+  <section id="features" aria-labelledby="features-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Servicios</span>
+        <h2 id="features-heading">Soluciones IA para cada etapa de tu transformación</h2>
+        <p>Desde automatización de procesos hasta modelos predictivos, cubrimos todo el espectro de la IA empresarial.</p>
+      </div>
+      <div class="features-list">
+        <div class="feature-row">
+          <div class="feature-content animate-slide-left">
+            <span class="feature-tag">Automatización</span>
+            <h3>Agentes de IA conversacionales</h3>
+            <p>Desplegamos agentes inteligentes que atienden clientes, califican leads y gestionan procesos internos las 24 horas.</p>
+            <ul class="feature-bullets">
+              <li>Integración con CRM y herramientas existentes</li>
+              <li>Entrenamiento con tu base de conocimiento</li>
+              <li>Escalación inteligente a equipo humano</li>
+            </ul>
+          </div>
+          <div class="feature-visual animate-slide-right"></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-content animate-slide-right">
+            <span class="feature-tag">Analytics</span>
+            <h3>Inteligencia de datos predictiva</h3>
+            <p>Convertimos tus datos en decisiones estratégicas con modelos de machine learning personalizados para tu industria.</p>
+            <ul class="feature-bullets">
+              <li>Dashboards ejecutivos en tiempo real</li>
+              <li>Predicción de demanda y churn</li>
+              <li>Segmentación avanzada de clientes</li>
+            </ul>
+          </div>
+          <div class="feature-visual animate-slide-left"></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-content animate-slide-left">
+            <span class="feature-tag">Optimización</span>
+            <h3>Workflows inteligentes</h3>
+            <p>Rediseñamos procesos operativos integrando IA generativa para eliminar tareas repetitivas y liberar talento humano.</p>
+            <ul class="feature-bullets">
+              <li>Automatización de documentos e informes</li>
+              <li>Procesamiento inteligente de emails</li>
+              <li>Flujos de aprobación con IA</li>
+            </ul>
+          </div>
+          <div class="feature-visual animate-slide-right"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how-it-works" aria-labelledby="how-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Nuestro proceso</span>
+        <h2 id="how-heading">Tres fases para transformar tu empresa</h2>
+        <p>Un protocolo probado que minimiza riesgos y maximiza resultados desde el primer día.</p>
+      </div>
+      <div class="steps-grid stagger-children">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <h3>Diagnóstico</h3>
+          <p>Auditamos tus procesos, datos y tecnología para identificar las oportunidades de mayor impacto con IA.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <h3>Implementación</h3>
+          <p>Desplegamos soluciones piloto rápidas, iteramos con tu equipo y escalamos lo que funciona.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <h3>Optimización</h3>
+          <p>Monitoreamos métricas clave, ajustamos modelos y expandimos la IA a nuevas áreas de tu negocio.</p>
+        </div>
+        <span class="step-connector"></span>
+        <span class="step-connector"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" aria-labelledby="testimonials-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Testimonios</span>
+        <h2 id="testimonials-heading">Lo que dicen nuestros clientes</h2>
+        <p>Resultados reales de empresas que transformaron sus operaciones con New Era.</p>
+      </div>
+      <div class="testimonials-grid stagger-children">
+        <div class="card testimonial-card">
+          <span class="testimonial-stars">★★★★★</span>
+          <blockquote>"Implementamos los agentes conversacionales de New Era hace 4 meses y nuestro equipo de ventas cerró un 180% más de demos. La mejor inversión tecnológica que hemos hecho."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">MG</div>
+            <div class="author-info">
+              <strong>María González</strong>
+              <span>VP de Ventas, NovaTech</span>
+            </div>
+          </div>
+        </div>
+        <div class="card testimonial-card">
+          <span class="testimonial-stars">★★★★★</span>
+          <blockquote>"El diagnóstico de New Era identificó ineficiencias que llevábamos años ignorando. En 6 semanas teníamos un sistema predictivo que redujo nuestros costos operativos en un 35%."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">CR</div>
+            <div class="author-info">
+              <strong>Carlos Ruiz</strong>
+              <span>COO, DataPrime</span>
+            </div>
+          </div>
+        </div>
+        <div class="card testimonial-card">
+          <span class="testimonial-stars">★★★★★</span>
+          <blockquote>"Lo que diferencia a New Era es que no te venden tecnología por vender. Cada solución tiene un impacto medible y un ROI claro. Son consultores de verdad."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">AL</div>
+            <div class="author-info">
+              <strong>Ana López</strong>
+              <span>CEO, SynergyAI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CASE STUDIES ============ -->
+  <section id="results" aria-labelledby="results-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Casos de éxito</span>
+        <h2 id="results-heading">Resultados que hablan por sí solos</h2>
+        <p>Números reales de transformaciones impulsadas por nuestra metodología.</p>
+      </div>
+      <div class="results-grid">
+        <div class="card result-card animate-on-scroll">
+          <div class="result-logo">NovaTech — Sector Fintech</div>
+          <div class="result-metrics">
+            <div class="metric">
+              <span class="metric-value">+240%</span>
+              <span class="metric-label">Demos agendadas</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">-60%</span>
+              <span class="metric-label">Costo por lead</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">3.8x</span>
+              <span class="metric-label">ROI en 90 días</span>
+            </div>
+          </div>
+          <p class="result-quote">"New Era no solo implementó la tecnología, nos enseñó a pensar en términos de IA."</p>
+          <a href="#" class="result-link">Leer caso completo →</a>
+        </div>
+        <div class="card result-card animate-on-scroll">
+          <div class="result-logo">Vertex Labs — Sector Logística</div>
+          <div class="result-metrics">
+            <div class="metric">
+              <span class="metric-value">-45%</span>
+              <span class="metric-label">Tiempos de entrega</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">+95%</span>
+              <span class="metric-label">Precisión predictiva</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">$2.3M</span>
+              <span class="metric-label">Ahorro anual</span>
+            </div>
+          </div>
+          <p class="result-quote">"El modelo predictivo de demanda transformó completamente nuestra cadena de suministro."</p>
+          <a href="#" class="result-link">Leer caso completo →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT / HISTORIA ============ -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <span class="section-label animate-slide-left">Nuestra historia</span>
+          <h2 id="about-heading" class="animate-slide-left">Nacimos para cerrar la brecha entre la IA y el negocio real</h2>
+          <p class="animate-slide-left">New Era nació de una frustración: demasiadas empresas invirtiendo en tecnología sin estrategia y demasiados proveedores vendiendo soluciones genéricas. Decidimos cambiar eso.</p>
+          <p class="animate-slide-left">Nuestro equipo combina experiencia en consultoría estratégica con conocimiento técnico profundo en machine learning, NLP y sistemas de IA generativa. No solo construimos — acompañamos.</p>
+          <div class="about-stats animate-slide-left">
+            <div class="stat">
+              <span class="stat-value">80+</span>
+              <span class="stat-label">Proyectos completados</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">50+</span>
+              <span class="stat-label">Empresas transformadas</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">3.5x</span>
+              <span class="stat-label">ROI promedio</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual animate-slide-right"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PORTFOLIO ============ -->
+  <section id="portfolio" aria-labelledby="portfolio-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Portafolio</span>
+        <h2 id="portfolio-heading">Proyectos que inspiran confianza</h2>
+        <p>Una selección de implementaciones exitosas en distintas industrias.</p>
+      </div>
+      <div class="portfolio-filters animate-on-scroll">
+        <button class="filter-btn active" type="button">Todos</button>
+        <button class="filter-btn" type="button">Automatización</button>
+        <button class="filter-btn" type="button">Analytics</button>
+        <button class="filter-btn" type="button">Chatbots</button>
+      </div>
+      <div class="portfolio-grid stagger-children">
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #818cf8, #6366f1);"></div>
+          <div class="portfolio-overlay">
+            <h3>Pipeline IA para Fintech</h3>
+            <span>Automatización</span>
+          </div>
+        </div>
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #c084fc, #a855f7);"></div>
+          <div class="portfolio-overlay">
+            <h3>Chatbot Multicanal Retail</h3>
+            <span>Chatbots</span>
+          </div>
+        </div>
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #f472b6, #ec4899);"></div>
+          <div class="portfolio-overlay">
+            <h3>Predicción de Demanda Logística</h3>
+            <span>Analytics</span>
+          </div>
+        </div>
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #34d399, #10b981);"></div>
+          <div class="portfolio-overlay">
+            <h3>NLP para Análisis Legal</h3>
+            <span>Analytics</span>
+          </div>
+        </div>
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);"></div>
+          <div class="portfolio-overlay">
+            <h3>Agente IA de Ventas B2B</h3>
+            <span>Automatización</span>
+          </div>
+        </div>
+        <div class="portfolio-item">
+          <div class="portfolio-image" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);"></div>
+          <div class="portfolio-overlay">
+            <h3>Dashboard Predictivo Healthcare</h3>
+            <span>Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section id="cta-final" aria-labelledby="cta-heading">
+    <div class="container animate-on-scroll">
+      <h2 id="cta-heading">¿Listo para la nueva era de tu empresa?</h2>
+      <p>Agenda una sesión de diagnóstico gratuita y descubre cómo la IA puede transformar tu operación en semanas.</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-btn-inverted">Agendar demo gratuita →</a>
+      </div>
+      <p class="cta-note">Sin compromiso · 30 minutos · 100% personalizado</p>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section id="team" aria-labelledby="team-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Equipo</span>
+        <h2 id="team-heading">Las personas detrás de la inteligencia</h2>
+        <p>Un equipo multidisciplinario que combina estrategia, tecnología y visión de negocio.</p>
+      </div>
+      <div class="team-grid stagger-children">
+        <div class="team-member">
+          <div class="member-photo">AG</div>
+          <h3>Ana García</h3>
+          <p>CEO & Fundadora</p>
+          <div class="member-social">
+            <a href="#" aria-label="LinkedIn de Ana García">in</a>
+            <a href="#" aria-label="Twitter de Ana García">𝕏</a>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-photo">CL</div>
+          <h3>Carlos López</h3>
+          <p>CTO — Head of AI</p>
+          <div class="member-social">
+            <a href="#" aria-label="LinkedIn de Carlos López">in</a>
+            <a href="#" aria-label="GitHub de Carlos López">gh</a>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-photo">MR</div>
+          <h3>María Rodríguez</h3>
+          <p>Directora de Estrategia</p>
+          <div class="member-social">
+            <a href="#" aria-label="LinkedIn de María Rodríguez">in</a>
+            <a href="#" aria-label="Twitter de María Rodríguez">𝕏</a>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-photo">DM</div>
+          <h3>David Martín</h3>
+          <p>Lead ML Engineer</p>
+          <div class="member-social">
+            <a href="#" aria-label="LinkedIn de David Martín">in</a>
+            <a href="#" aria-label="GitHub de David Martín">gh</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOG PREVIEW ============ -->
+  <section id="blog" aria-labelledby="blog-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Blog</span>
+        <h2 id="blog-heading">Perspectivas sobre IA empresarial</h2>
+        <p>Artículos, guías y análisis para líderes que quieren entender y aplicar la IA.</p>
+      </div>
+      <div class="blog-grid stagger-children">
+        <div class="card blog-card">
+          <div class="blog-image"></div>
+          <div class="blog-content">
+            <span class="blog-category">Estrategia</span>
+            <h3>5 señales de que tu empresa necesita IA (y no lo sabe)</h3>
+            <p>La mayoría de las empresas pierden oportunidades porque no reconocen los síntomas de procesos que podrían automatizarse con inteligencia artificial.</p>
+            <div class="blog-meta">
+              <span>Feb 2026</span>
+              <span>·</span>
+              <span>5 min lectura</span>
+            </div>
+          </div>
+        </div>
+        <div class="card blog-card">
+          <div class="blog-image"></div>
+          <div class="blog-content">
+            <span class="blog-category">Tecnología</span>
+            <h3>Agentes de IA vs. Chatbots: por qué la diferencia importa</h3>
+            <p>Un chatbot responde preguntas. Un agente de IA toma decisiones, ejecuta acciones y aprende. Entender esta diferencia es crucial para tu estrategia.</p>
+            <div class="blog-meta">
+              <span>Ene 2026</span>
+              <span>·</span>
+              <span>7 min lectura</span>
+            </div>
+          </div>
+        </div>
+        <div class="card blog-card">
+          <div class="blog-image"></div>
+          <div class="blog-content">
+            <span class="blog-category">Casos de uso</span>
+            <h3>Cómo una fintech redujo 60% su costo por lead con IA</h3>
+            <p>Análisis detallado de cómo implementamos un sistema de calificación inteligente de leads que transformó el pipeline de ventas de NovaTech.</p>
+            <div class="blog-meta">
+              <span>Dic 2025</span>
+              <span>·</span>
+              <span>8 min lectura</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAREERS ============ -->
+  <section id="careers" aria-labelledby="careers-heading">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-label">Trabaja con nosotros</span>
+        <h2 id="careers-heading">Únete a la nueva era</h2>
+        <p>Buscamos mentes curiosas que quieran construir el futuro de la IA aplicada.</p>
+      </div>
+      <div class="careers-list animate-on-scroll">
+        <div class="career-item">
+          <div class="career-info">
+            <h3>Senior ML Engineer</h3>
+            <div class="career-tags">
+              <span class="career-tag">Remoto</span>
+              <span class="career-tag">Full-time</span>
+              <span class="career-tag">IA/ML</span>
+            </div>
+          </div>
+          <a href="#" class="btn-secondary">Aplicar →</a>
+        </div>
+        <div class="career-item">
+          <div class="career-info">
+            <h3>AI Solutions Consultant</h3>
+            <div class="career-tags">
+              <span class="career-tag">Híbrido</span>
+              <span class="career-tag">Full-time</span>
+              <span class="career-tag">Consultoría</span>
+            </div>
+          </div>
+          <a href="#" class="btn-secondary">Aplicar →</a>
+        </div>
+        <div class="career-item">
+          <div class="career-info">
+            <h3>Frontend Developer</h3>
+            <div class="career-tags">
+              <span class="career-tag">Remoto</span>
+              <span class="career-tag">Full-time</span>
+              <span class="career-tag">Desarrollo</span>
+            </div>
+          </div>
+          <a href="#" class="btn-secondary">Aplicar →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAP / UBICACIÓN ============ -->
+  <section id="location" aria-labelledby="location-heading">
+    <div class="container">
+      <div class="location-grid">
+        <div class="location-info animate-slide-left">
+          <h2 id="location-heading">Encuéntranos</h2>
+          <div class="location-detail">
+            <span class="icon">📍</span>
+            <p>Av. Reforma 222, Piso 14<br>Col. Juárez, Ciudad de México<br>CP 06600</p>
+          </div>
+          <div class="location-detail">
+            <span class="icon">📞</span>
+            <p>+52 (55) 1234-5678</p>
+          </div>
+          <div class="location-detail">
+            <span class="icon">✉️</span>
+            <p>hola@newera.ai</p>
+          </div>
+        </div>
+        <div class="location-map animate-slide-right">
+          <span>📍 Mapa — Ciudad de México</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="footer-logo">New Era</span>
+          <p>Consultoría de inteligencia artificial para empresas que quieren liderar la transformación digital.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="Twitter / X">𝕏</a>
+            <a href="#" aria-label="GitHub">gh</a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h4>Servicios</h4>
+          <a href="#features">Agentes IA</a>
+          <a href="#features">Analytics Predictivo</a>
+          <a href="#features">Workflows Inteligentes</a>
+          <a href="#how-it-works">Nuestro Proceso</a>
+        </div>
+        <div class="footer-column">
+          <h4>Empresa</h4>
+          <a href="#about">Sobre nosotros</a>
+          <a href="#blog">Blog</a>
+          <a href="#careers">Trabaja con nosotros</a>
+          <a href="#location">Contacto</a>
+        </div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <a href="#">Política de privacidad</a>
+          <a href="#">Términos de servicio</a>
+          <a href="#">Política de cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 New Era. Todos los derechos reservados.</p>
+        <p>Hecho con inteligencia (artificial y humana)</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === INTERSECTION OBSERVER ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.animate-on-scroll, .animate-slide-left, .animate-slide-right, .stagger-children')
+      .forEach(el => observer.observe(el));
+
+    // === NAVBAR SCROLL ===
+    const navbar = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // === MOBILE MENU ===
+    const hamburger = document.querySelector('.nav-hamburger');
+    const mobileMenu = document.querySelector('.nav-mobile-menu');
+    hamburger?.addEventListener('click', () => {
+      const isActive = hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isActive);
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // === SMOOTH SCROLL ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // === PORTFOLIO FILTERS (visual only) ===
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // === MOUSE GLOW EFFECT ===
+    document.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
+      document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+    });
+  </script>
+
+</body>
+</html>

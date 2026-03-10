@@ -3,8 +3,9 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "New Era — Consultoría AI",
-  description: "Consultoría de tecnología y transformación digital con AI",
+  title: "New Era — Consultoría de Inteligencia Artificial para la Transformación Digital",
+  description:
+    "New Era transforma empresas con inteligencia artificial. Diagnóstico, implementación y optimización de soluciones IA para acelerar tu crecimiento.",
 };
 
 export default function RootLayout({
@@ -13,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -29,37 +30,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-black/10 bg-white/80 backdrop-blur-sm dark:border-white/10 dark:bg-black/80">
-          <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-            <a href="/" className="text-lg font-semibold">
-              New Era
-            </a>
-            <div className="flex gap-6 text-sm font-medium">
-              <a href="/design-1" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-                Organic Tech
-              </a>
-              <a href="/design-2" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-                Midnight Luxe
-              </a>
-              <a href="/design-3" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-                Brutalist Signal
-              </a>
-              <a href="/design-4" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-                Vapor Clinic
-              </a>
-              <a href="/spline-3d" className="transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-                3D Spline
-              </a>
-            </div>
-          </div>
-        </nav>
-        <div className="pt-14">
-          {children}
-        </div>
+        {children}
 
         {/* ElevenLabs Voice Agent Widget */}
         {/* @ts-expect-error -- custom element from ElevenLabs widget embed */}
-        <elevenlabs-convai agent-id="agent_01k0pw199zfqevj0qd06ja91ec"></elevenlabs-convai>
+        <elevenlabs-convai agent-id="agent_6901kjw7mhbces0r3e0fg9ykvm1a"></elevenlabs-convai>
         <Script
           src="https://unpkg.com/@elevenlabs/convai-widget-embed"
           strategy="lazyOnload"

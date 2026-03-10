@@ -811,7 +811,7 @@ export default function VaporClinicPage() {
         .vapor-clinic-page ::-webkit-scrollbar-thumb { background: ${PLASMA}; border-radius: 4px; }
       `}</style>
 
-      <div className="vapor-clinic-page relative w-full min-h-screen -mt-14">
+      <div className="vapor-clinic-page relative w-full min-h-screen ">
         <div className="noise-overlay"></div>
         <Hero />
         <Features />
